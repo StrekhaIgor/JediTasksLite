@@ -33,7 +33,7 @@ import TaskList from './components/TaskList.vue';
             isEdit: false,
             tasks: [
               {
-                value: 'выучить Vue',
+                value: 'выучить Vue3',
                 id: 1,
                 isDone: false,
                 isEdit: false,
