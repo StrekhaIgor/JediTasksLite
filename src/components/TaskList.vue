@@ -27,6 +27,8 @@ export default {
         'setExecuteDate',
         'changeEditSubTask',
         'changeVisibleSubTasks',
+        'deleteSubTask',
+        'generateStartSubTask'
     ],
     methods: {
         createNewList() {
@@ -47,6 +49,12 @@ export default {
         changeVisibleSubTasks(projectId) {
             this.$emit('changeVisibleSubTasks', projectId);
         },
+        deleteSubTask(projectId, subTaskId) {
+            this.$emit('deleteSubTask', projectId, subTaskId);
+        },
+        generateStartSubTask(projectId, message) {
+            this.$emit('generateStartSubTask', projectId, message);
+        }
     }
 }
 
@@ -56,7 +64,7 @@ export default {
 
 <div class="container-tasks">
     <task-list-tool-bar v-if="!selectedList.isEdit"
-    @addNewTask="$emit('addNewTask')"/>
+    @add-new-task="$emit('addNewTask')"/>
     <input type="text" v-if="selectedList.isEdit" v-model="this.listName"
     @blur="createNewList"
     @keyup.enter="createNewList"
@@ -64,16 +72,18 @@ export default {
     <template v-for="task in selectedList.tasks">
         <task :task="task"
         :task-list-id="selectedList.id"
-        @deleteTask="$emit('deleteTask', selectedList.id, task.id)"
-        @changeEditTask="$emit('changeEditTask', selectedList.id, task.id)"
-        @moveTaskToProjects="$emit('moveTaskToProjects', selectedList.id, task.id)"
+        @delete-task="$emit('deleteTask', selectedList.id, task.id)"
+        @change-edit-task="$emit('changeEditTask', selectedList.id, task.id)"
+        @move-task-to-projects="$emit('moveTaskToProjects', selectedList.id, task.id)"
         @set-execute-date="setExecuteDate"
-        @change-visible-sub-tasks="changeVisibleSubTasks"/>
+        @change-visible-sub-tasks="changeVisibleSubTasks"
+        @generate-start-sub-task="generateStartSubTask" />
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
             :sub-tasks="task.subTasks"
             :project-id="task.id"
-            @change-edit-sub-task="changeEditSubTask"/>
+            @change-edit-sub-task="changeEditSubTask"
+            @delete-sub-task="deleteSubTask"/>
         </template>
     </template>
 </div>

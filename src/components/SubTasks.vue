@@ -10,6 +10,7 @@ export default {
     },
     emits: [
         'changeEditSubTask',
+        'deleteSubTask',
     ]
 }
 </script>
@@ -17,8 +18,9 @@ export default {
 <template>
     <div class="subtask">
         <sub-task v-for="subtask in subTasks"
-        :subTask="subtask"
-        @change-edit-sub-task="this.$emit('changeEditSubTask', this.projectId, subtask.id)" />
+        :sub-task="subtask"
+        @change-edit-sub-task="this.$emit('changeEditSubTask', this.projectId, subtask.id)"
+        @delete-sub-task="this.$emit('deleteSubTask', this.projectId, subtask.id)" />
     </div>
 </template>
 

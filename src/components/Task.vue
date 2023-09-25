@@ -10,6 +10,7 @@ export default {
         'moveTaskToProjects',
         'setExecuteDate',
         'changeVisibleSubTasks',
+        'generateStartSubTask'
     ],
     computed: {
         date: {
@@ -23,8 +24,19 @@ export default {
             set(executeDate) {
                 this.$emit('setExecuteDate', this.taskListId, this.task.id, executeDate);
             }
+        },
+        message() {
+            return "Создайте задачу для проекта " + this.task.value;
         }
     },
+    methods: {
+        changeEditTask() {
+            this.$emit('changeEditTask');
+            if (this.taskListId === 2) {
+                this.$emit('generateStartSubTask', this.task.id, this.message);
+            }
+        }
+    }
 }
 
 </script>
@@ -42,11 +54,11 @@ export default {
 <div class="container-task" v-if="task.isEdit">
     <input type="checkbox" v-model="task.isDone">
     <input type="text" v-model="task.value" 
-    @blur="$emit('changeEditTask')" 
+    @blur="changeEditTask" 
     @keyup.enter="$emit('changeEditTask')">
     <input type="date" v-model="this.date">
     <button @click="$emit('deleteTask')">Удалить</button>
-    <button @click="$emit('changeEditTask')">Сохранить</button>
+    <button @click="changeEditTask">Сохранить</button>
 </div>
 </template>
 

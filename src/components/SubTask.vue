@@ -9,7 +9,8 @@ export default {
         subTask: Object,
     },
     emits: [
-        'changeEditSubTask'
+        'changeEditSubTask',
+        'deleteSubTask'
     ]
 }
 
@@ -21,7 +22,7 @@ export default {
     <input type="checkbox" v-model="subTask.isDone">
     <p @click="$emit('changeEditSubTask')" 
     :class="{ done: subTask.isDone}">{{ subTask.value }}</p>
-    <button @click="$emit('deleteTask')">Удалить</button>
+    <button @click="$emit('deleteSubTask')">Удалить</button>
 </div>
 <div class="container-task" v-if="subTask.isEdit">
     <input type="text" v-model="subTask.value">

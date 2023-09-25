@@ -165,6 +165,26 @@ import TaskList from './components/TaskList.vue';
         .filter((project) => project.id === projectId)[0];
         targetProject.isShowSubTasks = !targetProject.isShowSubTasks;
       },
+      deleteSubTask(projectId, subTaskId) {
+        let targetProject = this
+        .taskLists[1]
+        .tasks
+        .filter((project) => project.id === projectId)[0];
+        targetProject.subTasks = targetProject.subTasks
+        .filter((subTask) => subTask.id !== subTaskId);
+      },
+      generateStartSubTask(projectId, message) {
+        let startTask = {};
+        startTask.id = 0;
+        startTask.value = message;
+        startTask.isDone = false;
+        startTask.isEdit = false;
+        let targetSubTasks = this.taskLists[1]
+        .tasks
+        .filter(project => project.id === projectId)[0]
+        .subTasks;
+        targetSubTasks.unshift(startTask);
+      }
     }
   }
 </script>
@@ -176,15 +196,17 @@ import TaskList from './components/TaskList.vue';
   @change-selected="changeSelected"/>
   <task-list :selected-list="this.selectedList"
   @delete-task="deleteTask"
-  @changeEditTask="changeEditTask"
-  @addNewTask="addNewTask"
-  @moveTaskToProjects="moveTaskToProjects"
+  @change-edit-task="changeEditTask"
+  @add-new-task="addNewTask"
+  @move-task-to-projects="moveTaskToProjects"
   @change-edit-list-name="changeEditListName"
   @change-selected="changeSelected"
   @set-execute-date="setExecuteDate"
   @change-edit-sub-task="changeEditSubTask"
-  @changeVisibleSubTasks="changeVisibleSubTasks" />
-  <button @click="changeEditSubTask(1, 1)">test</button>
+  @change-visible-sub-tasks="changeVisibleSubTasks"
+  @delete-sub-task="deleteSubTask"
+  @generateStartSubTask="generateStartSubTask" />
+  <button @click="generateStartSubTask(2, 'kek')">test</button>
 </template>
 
 <style scoped>
