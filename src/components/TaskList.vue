@@ -27,7 +27,6 @@ export default {
         'setExecuteDate',
         'changeEditSubTask',
         'changeVisibleSubTasks',
-        'createStartTaskOfProject'
     ],
     methods: {
         createNewList() {
@@ -48,9 +47,6 @@ export default {
         changeVisibleSubTasks(projectId) {
             this.$emit('changeVisibleSubTasks', projectId);
         },
-        createStartTaskOfProject(task) {
-            this.$emit('createStartTaskOfProject', task)
-        }
     }
 }
 
@@ -72,8 +68,7 @@ export default {
         @changeEditTask="$emit('changeEditTask', selectedList.id, task.id)"
         @moveTaskToProjects="$emit('moveTaskToProjects', selectedList.id, task.id)"
         @set-execute-date="setExecuteDate"
-        @change-visible-sub-tasks="changeVisibleSubTasks"
-        @createStartTaskOfProject="createStartTaskOfProject"/>
+        @change-visible-sub-tasks="changeVisibleSubTasks"/>
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
             :sub-tasks="task.subTasks"

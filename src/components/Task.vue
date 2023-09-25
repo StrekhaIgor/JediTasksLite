@@ -10,7 +10,6 @@ export default {
         'moveTaskToProjects',
         'setExecuteDate',
         'changeVisibleSubTasks',
-        'createStartTaskOfProject'
     ],
     computed: {
         date: {
@@ -26,21 +25,6 @@ export default {
             }
         }
     },
-    mounted() {
-        console.log(this.task);
-        if (this.taskListId !== 2) return;
-        if (this.task.subTasks.length === 0) {
-            let message = 'Добавьте задачу для проекта ' + this.task.value;
-            let newTask = {
-                value: message,
-                date: new Date,
-                isDone: false,
-                isEdit: false,
-            };
-            this.$emit('createStartTaskOfProject', newTask);
-            console.log('work')
-        }
-    }
 }
 
 </script>

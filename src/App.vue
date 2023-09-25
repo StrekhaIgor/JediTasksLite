@@ -111,6 +111,7 @@ import TaskList from './components/TaskList.vue';
       addNewTask() {
         let newTask = {};
         newTask.isEdit = true;
+        newTask.subTasks = [];
         this.selectedList.tasks.unshift(newTask);
         this.refreshTaskId();
       },
@@ -164,10 +165,6 @@ import TaskList from './components/TaskList.vue';
         .filter((project) => project.id === projectId)[0];
         targetProject.isShowSubTasks = !targetProject.isShowSubTasks;
       },
-      createStartTaskOfProject(task) {
-        task.id = this.taskLists[0].tasks.length + 1;
-        this.taskLists[0].tasks.push(task);
-      }
     }
   }
 </script>
@@ -186,8 +183,7 @@ import TaskList from './components/TaskList.vue';
   @change-selected="changeSelected"
   @set-execute-date="setExecuteDate"
   @change-edit-sub-task="changeEditSubTask"
-  @changeVisibleSubTasks="changeVisibleSubTasks"
-  @createStartTaskOfProject="createStartTaskOfProject" />
+  @changeVisibleSubTasks="changeVisibleSubTasks" />
   <button @click="changeEditSubTask(1, 1)">test</button>
 </template>
 
