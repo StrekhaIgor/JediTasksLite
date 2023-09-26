@@ -187,9 +187,6 @@ import { reactive } from 'vue';
         targetSubTasks.subTasks = targetSubTasks.subTasks.filter(subTask => subTask.id !== 0);
         targetSubTasks.subTasks.unshift(startTask);
       },
-      delayAction(handler, ...param) {
-        setTimeout(() => handler(...param), 1000);
-      }
     }
   }
 </script>

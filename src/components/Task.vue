@@ -27,6 +27,9 @@ export default {
         },
         message() {
             return "Создайте задачу для проекта " + this.task.value;
+        },
+        isDone() {
+            return this.task.isDone;
         }
     },
     methods: {
@@ -39,6 +42,11 @@ export default {
         delayDelete() {
             setTimeout(() => this.$emit('deleteTask'), 1000);
         }
+    },
+    watch: {
+        isDone() {
+            if (this.task.isDone) this.delayDelete();
+        }
     }
 }
 
@@ -50,7 +58,6 @@ export default {
     <input type="checkbox" v-model="task.isDone">
     <p @click="$emit('changeEditTask')" 
     :class="{ done: task.isDone}">{{ task.value }}</p>
-    <button @click="delayDelete">Удалить</button>
     <button @click="$emit('moveTaskToProjects')" v-if="taskListId !== 2">В проекты</button>
     <button v-else @click="this.$emit('changeVisibleSubTasks', task.id)">Показать задачи</button>
 </div>
@@ -60,7 +67,6 @@ export default {
     @blur="changeEditTask" 
     @keyup.enter="changeEditTask">
     <input type="date" v-model="this.date">
-    <button @click="delayDelete">Удалить</button>
     <button @click="changeEditTask">Сохранить</button>
 </div>
 </template>
