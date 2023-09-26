@@ -1,6 +1,7 @@
 <script>
 import HeaderApp from './components/HeaderApp.vue';
 import TaskList from './components/TaskList.vue';
+import { reactive } from 'vue';
 
   export default {
     data() { 
@@ -179,11 +180,12 @@ import TaskList from './components/TaskList.vue';
         startTask.value = message;
         startTask.isDone = false;
         startTask.isEdit = false;
-        let targetSubTasks = this.taskLists[1]
-        .tasks
-        .filter(project => project.id === projectId)[0]
-        .subTasks;
-        targetSubTasks.unshift(startTask);
+        let targetSubTasks =
+          this.taskLists[1]
+          .tasks
+          .filter(project => project.id === projectId)[0];
+        targetSubTasks.subTasks = targetSubTasks.subTasks.filter(subTask => subTask.id !== 0);
+        targetSubTasks.subTasks.unshift(startTask);
       }
     }
   }

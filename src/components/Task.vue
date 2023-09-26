@@ -55,7 +55,7 @@ export default {
     <input type="checkbox" v-model="task.isDone">
     <input type="text" v-model="task.value" 
     @blur="changeEditTask" 
-    @keyup.enter="$emit('changeEditTask')">
+    @keyup.enter="changeEditTask">
     <input type="date" v-model="this.date">
     <button @click="$emit('deleteTask')">Удалить</button>
     <button @click="changeEditTask">Сохранить</button>
