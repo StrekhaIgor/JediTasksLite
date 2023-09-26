@@ -186,6 +186,9 @@ import { reactive } from 'vue';
           .filter(project => project.id === projectId)[0];
         targetSubTasks.subTasks = targetSubTasks.subTasks.filter(subTask => subTask.id !== 0);
         targetSubTasks.subTasks.unshift(startTask);
+      },
+      delayAction(handler, ...param) {
+        setTimeout(() => handler(...param), 1000);
       }
     }
   }
@@ -208,7 +211,7 @@ import { reactive } from 'vue';
   @change-visible-sub-tasks="changeVisibleSubTasks"
   @delete-sub-task="deleteSubTask"
   @generateStartSubTask="generateStartSubTask" />
-  <button @click="generateStartSubTask(2, 'kek')">test</button>
+  <button @click="delayAction(deleteTask, 1, 1)">test</button>
 </template>
 
 <style scoped>

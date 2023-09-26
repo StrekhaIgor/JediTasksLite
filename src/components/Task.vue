@@ -35,6 +35,9 @@ export default {
             if (this.taskListId === 2) {
                 this.$emit('generateStartSubTask', this.task.id, this.message);
             }
+        },
+        delayDelete() {
+            setTimeout(() => this.$emit('deleteTask'), 1000);
         }
     }
 }
@@ -47,7 +50,7 @@ export default {
     <input type="checkbox" v-model="task.isDone">
     <p @click="$emit('changeEditTask')" 
     :class="{ done: task.isDone}">{{ task.value }}</p>
-    <button @click="$emit('deleteTask')">Удалить</button>
+    <button @click="delayDelete">Удалить</button>
     <button @click="$emit('moveTaskToProjects')" v-if="taskListId !== 2">В проекты</button>
     <button v-else @click="this.$emit('changeVisibleSubTasks', task.id)">Показать задачи</button>
 </div>
@@ -57,7 +60,7 @@ export default {
     @blur="changeEditTask" 
     @keyup.enter="changeEditTask">
     <input type="date" v-model="this.date">
-    <button @click="$emit('deleteTask')">Удалить</button>
+    <button @click="delayDelete">Удалить</button>
     <button @click="changeEditTask">Сохранить</button>
 </div>
 </template>
