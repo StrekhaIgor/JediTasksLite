@@ -1,7 +1,6 @@
 <script>
 import HeaderApp from './components/HeaderApp.vue';
 import TaskList from './components/TaskList.vue';
-import { reactive } from 'vue';
 
   export default {
     data() { 
@@ -18,12 +17,14 @@ import { reactive } from 'vue';
                 id: 1,
                 isDone: false,
                 isEdit: false,
+                executeDate: new Date(2023, 11, 1)
               },
               {
                 value: 'написать приложуху',
                 id: 2,
                 isDone: false,
                 isEdit: false,
+                executeDate: new Date(2023, 10, 1)
               }
             ]
           },
@@ -108,6 +109,7 @@ import { reactive } from 'vue';
       changeEditTask(listId, taskId) {
         let targetTask = this.getTargetTask(listId, taskId);
         targetTask.isEdit = !targetTask.isEdit;
+        this.sortTasks();
       },
       addNewTask() {
         let newTask = {};
@@ -115,6 +117,7 @@ import { reactive } from 'vue';
         newTask.subTasks = [];
         this.selectedList.tasks.unshift(newTask);
         this.refreshTaskId();
+        this.sortTasks();
       },
       moveTaskToProjects(taskListId, taskId) {
         let taskList = this.taskLists
@@ -187,6 +190,12 @@ import { reactive } from 'vue';
         targetSubTasks.subTasks = targetSubTasks.subTasks.filter(subTask => subTask.id !== 0);
         targetSubTasks.subTasks.unshift(startTask);
       },
+      sortTasks() {
+        this.taskLists[0].tasks.sort((a, b) => a.executeDate - b.executeDate);
+      }
+    },
+    mounted() {
+      this.sortTasks();
     }
   }
 </script>
@@ -208,7 +217,7 @@ import { reactive } from 'vue';
   @change-visible-sub-tasks="changeVisibleSubTasks"
   @delete-sub-task="deleteSubTask"
   @generateStartSubTask="generateStartSubTask" />
-  <button @click="delayAction(deleteTask, 1, 1)">test</button>
+  <button @click="sortTasks">test</button>
 </template>
 
 <style scoped>

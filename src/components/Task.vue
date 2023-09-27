@@ -22,7 +22,7 @@ export default {
                 }
             },
             set(executeDate) {
-                this.$emit('setExecuteDate', this.taskListId, this.task.id, executeDate);
+                this.$emit('setExecuteDate', this.taskListId, this.task.id, new Date(executeDate));
             }
         },
         message() {
@@ -30,6 +30,14 @@ export default {
         },
         isDone() {
             return this.task.isDone;
+        },
+        executeDate() {
+            let today = new Date().toLocaleDateString();
+            if (this.task.executeDate.toLocaleDateString() === today) {
+                return 'Сегодня';
+            } else {
+                return this.task.executeDate.toLocaleDateString();
+            }
         }
     },
     methods: {
@@ -56,8 +64,13 @@ export default {
 
 <div class="container-task" v-if="!task.isEdit">
     <input type="checkbox" v-model="task.isDone">
-    <p @click="$emit('changeEditTask')" 
-    :class="{ done: task.isDone}">{{ task.value }}</p>
+    <div class="task-date-wrapper">
+        <p @click="$emit('changeEditTask')" 
+        :class="{ done: task.isDone}">{{ task.value }}</p>
+        <p v-if="this.task.executeDate">
+            {{ this.executeDate }}
+        </p>
+    </div>
     <button @click="$emit('moveTaskToProjects')" v-if="taskListId !== 2">В проекты</button>
     <button v-else @click="this.$emit('changeVisibleSubTasks', task.id)">Показать задачи</button>
 </div>
@@ -78,6 +91,12 @@ div.container-task {
     flex-direction: row;
     width: 50vw;
     border: 1px solid black;
+}
+
+div.task-date-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 p {
