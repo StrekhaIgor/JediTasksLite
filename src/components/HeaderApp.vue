@@ -39,7 +39,7 @@ export default {
 
 <template>
     <div class="header">
-        <img src="./icons/mainIcon.png" alt="Icon">
+        <img src="./icons/mainIcon.png" alt="Icon" class="main-icon">
         <h1>
             Jedi Tasks<span>Lite</span>
         </h1>
@@ -51,7 +51,7 @@ export default {
 </template>
 
 <style>
-    img {
+    img.main-icon {
         width: 10vh;
         height: 10vh;
         display: inline-block;

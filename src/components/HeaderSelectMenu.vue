@@ -55,8 +55,8 @@ label {
     font-size: 20px;
 }
 
-option.option-new-list {
-    color: red;
+.option-new-list {
+    color: rgb(255, 0, 0);
 }
 
 </style>

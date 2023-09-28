@@ -17,14 +17,16 @@ import TaskList from './components/TaskList.vue';
                 id: 1,
                 isDone: false,
                 isEdit: false,
-                executeDate: new Date(2023, 11, 1)
+                executeDate: new Date(2023, 11, 1),
+                typeTask: 'home'
               },
               {
                 value: 'написать приложуху',
                 id: 2,
                 isDone: false,
                 isEdit: false,
-                executeDate: new Date(2023, 10, 1)
+                executeDate: new Date(2023, 10, 1),
+                typeTask: 'hobbie'
               }
             ]
           },

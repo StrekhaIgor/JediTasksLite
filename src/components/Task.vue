@@ -38,6 +38,15 @@ export default {
             } else {
                 return this.task.executeDate.toLocaleDateString();
             }
+        },
+        srcIconTypeTask() {
+            switch(this.task.typeTask) {
+                case 'home':
+                    return '/src/components/icons/homeTask.svg';
+                case 'hobbie':
+                    return '/src/components/icons/hobbieTask1.svg';
+                default: return '';
+            }
         }
     },
     methods: {
@@ -71,6 +80,12 @@ export default {
             {{ this.executeDate }}
         </p>
     </div>
+    <div class="container-type-task-icon">
+        <img :src="srcIconTypeTask" 
+        class="type-icon" 
+        v-if="this.task.typeTask"
+        :title="this.task.typeTask">
+    </div>
     <button @click="$emit('moveTaskToProjects')" v-if="taskListId !== 2">В проекты</button>
     <button v-else @click="this.$emit('changeVisibleSubTasks', task.id)">Показать задачи</button>
 </div>
@@ -96,6 +111,9 @@ div.container-task {
 div.task-date-wrapper {
     display: flex;
     flex-direction: column;
+}
+
+div.container-type-task-icon {
     flex-grow: 1;
 }
 
@@ -105,6 +123,13 @@ p {
 
 p.done {
     text-decoration: line-through;
+}
+
+img.type-icon {
+    width: 24px;
+    height: 24px;
+    margin: 0px;
+    padding: 0px;
 }
 
 </style>
