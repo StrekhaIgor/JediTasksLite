@@ -10,7 +10,8 @@ export default {
         'moveTaskToProjects',
         'setExecuteDate',
         'changeVisibleSubTasks',
-        'generateStartSubTask'
+        'generateStartSubTask',
+        'setTypeTask'
     ],
     computed: {
         date: {
@@ -45,6 +46,8 @@ export default {
                     return '/src/components/icons/homeTask.svg';
                 case 'hobbie':
                     return '/src/components/icons/hobbieTask1.svg';
+                case 'job':
+                    return '/src/components/icons/jobTask.svg';
                 default: return '';
             }
         }
@@ -73,28 +76,55 @@ export default {
 
 <div class="container-task" v-if="!task.isEdit">
     <input type="checkbox" v-model="task.isDone">
-    <div class="task-date-wrapper">
-        <p @click="$emit('changeEditTask')" 
+    <div class="task-date-wrapper"
+    @click="$emit('changeEditTask')">
+        <p 
         :class="{ done: task.isDone}">{{ task.value }}</p>
         <p v-if="this.task.executeDate">
             {{ this.executeDate }}
         </p>
     </div>
-    <div class="container-type-task-icon">
+    <div class="container-type-task-icon"
+    @click="$emit('changeEditTask')">
         <img :src="srcIconTypeTask" 
-        class="type-icon" 
+        class="type-icon picked" 
         v-if="this.task.typeTask"
         :title="this.task.typeTask">
     </div>
-    <button @click="$emit('moveTaskToProjects')" v-if="taskListId !== 2">В проекты</button>
-    <button v-else @click="this.$emit('changeVisibleSubTasks', task.id)">Показать задачи</button>
+    <button 
+    @click="$emit('moveTaskToProjects')" 
+    v-if="taskListId !== 2"
+    class="button-to-project"
+    >В проекты</button>
+    <button 
+    v-else 
+    @click="this.$emit('changeVisibleSubTasks', task.id)"
+    >Показать задачи</button>
 </div>
 <div class="container-task" v-if="task.isEdit">
     <input type="checkbox" v-model="task.isDone">
-    <input type="text" v-model="task.value" 
-    @blur="changeEditTask" 
-    @keyup.enter="changeEditTask">
-    <input type="date" v-model="this.date">
+    <div class="task-date-wrapper">
+        <input type="text" v-model="task.value" 
+        @keyup.enter="changeEditTask">
+        <input type="date" v-model="this.date">
+    </div>
+    <div class="container-type-task-icon">
+        <img src="/src/components/icons/jobTask.svg"
+        @click="this.$emit('setTypeTask', this.taskListId, task.id, 'job')" 
+        class="type-icon"
+        :class="{picked: this.task.typeTask === 'job'}"
+        title="job">
+        <img src="/src/components/icons/homeTask.svg"
+        @click="this.$emit('setTypeTask', this.taskListId, task.id, 'home')" 
+        class="type-icon"
+        :class="{picked: this.task.typeTask === 'home'}"
+        title="home">
+        <img src="/src/components/icons/hobbieTask1.svg"
+        @click="this.$emit('setTypeTask', this.taskListId, task.id, 'hobbie')"
+        class="type-icon"
+        :class="{picked: this.task.typeTask === 'hobbie'}"
+        title="hobbie">
+    </div>
     <button @click="changeEditTask">Сохранить</button>
 </div>
 </template>
@@ -126,10 +156,20 @@ p.done {
 }
 
 img.type-icon {
-    width: 24px;
-    height: 24px;
-    margin: 0px;
-    padding: 0px;
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+img.picked {
+    background-color: greenyellow;
+}
+
+button {
+    height: max-content;
 }
 
 </style>

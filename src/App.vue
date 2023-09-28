@@ -194,6 +194,10 @@ import TaskList from './components/TaskList.vue';
       },
       sortTasks() {
         this.taskLists[0].tasks.sort((a, b) => a.executeDate - b.executeDate);
+      },
+      setTypeTask(taskListId, taskId, value) {
+        let targetTask = this.getTargetTask(taskListId, taskId);
+        targetTask.typeTask = value;
       }
     },
     mounted() {
@@ -218,7 +222,8 @@ import TaskList from './components/TaskList.vue';
   @change-edit-sub-task="changeEditSubTask"
   @change-visible-sub-tasks="changeVisibleSubTasks"
   @delete-sub-task="deleteSubTask"
-  @generateStartSubTask="generateStartSubTask" />
+  @generateStartSubTask="generateStartSubTask"
+  @set-type-task="setTypeTask" />
   <button @click="sortTasks">test</button>
 </template>
 
