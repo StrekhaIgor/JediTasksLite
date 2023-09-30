@@ -198,6 +198,10 @@ import TaskList from './components/TaskList.vue';
       setTypeTask(taskListId, taskId, value) {
         let targetTask = this.getTargetTask(taskListId, taskId);
         targetTask.typeTask = value;
+      },
+      repeatTask(taskId) {
+        let targetTask = this.getTargetTask(1, taskId);
+        targetTask.isRepeat = !targetTask.isRepeat;
       }
     },
     mounted() {
@@ -223,7 +227,8 @@ import TaskList from './components/TaskList.vue';
   @change-visible-sub-tasks="changeVisibleSubTasks"
   @delete-sub-task="deleteSubTask"
   @generateStartSubTask="generateStartSubTask"
-  @set-type-task="setTypeTask" />
+  @set-type-task="setTypeTask"
+  @repeat-task="repeatTask" />
   <button @click="sortTasks">test</button>
 </template>
 

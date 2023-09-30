@@ -11,7 +11,8 @@ export default {
         'setExecuteDate',
         'changeVisibleSubTasks',
         'generateStartSubTask',
-        'setTypeTask'
+        'setTypeTask',
+        'repeatTask'
     ],
     computed: {
         date: {
@@ -90,6 +91,9 @@ export default {
         class="type-icon picked" 
         v-if="this.task.typeTask"
         :title="this.task.typeTask">
+        <img v-if="this.task.isRepeat" 
+        src="/src/components/icons/repeat.svg"
+        class="type-icon picked">
     </div>
     <button 
     @click="$emit('moveTaskToProjects')" 
@@ -124,6 +128,12 @@ export default {
         class="type-icon"
         :class="{picked: this.task.typeTask === 'hobbie'}"
         title="hobbie">
+        <img v-if="this.taskListId === 1" 
+        src="/src/components/icons/repeat.svg"
+        @click="this.$emit('repeatTask')"
+        class="type-icon"
+        :class="{picked: this.task.isRepeat}"
+        title="repeat">
     </div>
     <button @click="changeEditTask">Сохранить</button>
 </div>

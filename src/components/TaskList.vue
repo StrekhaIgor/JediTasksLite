@@ -29,7 +29,8 @@ export default {
         'changeVisibleSubTasks',
         'deleteSubTask',
         'generateStartSubTask',
-        'setTypeTask'
+        'setTypeTask',
+        'repeatTask'
     ],
     methods: {
         createNewList() {
@@ -82,7 +83,8 @@ export default {
         @set-execute-date="setExecuteDate"
         @change-visible-sub-tasks="changeVisibleSubTasks"
         @generate-start-sub-task="generateStartSubTask"
-        @set-type-task="setTypeTask" />
+        @set-type-task="setTypeTask"
+        @repeat-task="$emit('repeatTask', task.id)" />
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
             :sub-tasks="task.subTasks"
