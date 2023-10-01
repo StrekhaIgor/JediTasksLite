@@ -1,10 +1,5 @@
 <script>
 export default {
-    data() {
-        return {
-            date: new Date,
-        }
-    },
     props: {
         subTask: Object,
     },
@@ -26,7 +21,6 @@ export default {
 </div>
 <div class="container-task" v-if="subTask.isEdit">
     <input type="text" v-model="subTask.value">
-    <input type="date" v-model="this.date">
     <button @click="$emit('deleteTask')">Удалить</button>
     <button @click="$emit('changeEditSubTask')">Сохранить</button>
 </div>

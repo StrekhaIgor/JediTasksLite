@@ -179,6 +179,14 @@ import TaskList from './components/TaskList.vue';
         targetProject.subTasks = targetProject.subTasks
         .filter((subTask) => subTask.id !== subTaskId);
       },
+      createSubTask(projectId) {
+        let targetProject = this.getTargetTask(2, projectId);
+        let subTask = {
+          isEdit: true,
+        };
+        subTask.id = Math.max(...targetProject.subTasks.map((elem) => elem.id)) + 1;
+        targetProject.subTasks.push(subTask);
+      },
       generateStartSubTask(projectId, message) {
         let startTask = {};
         startTask.id = 0;
@@ -228,8 +236,9 @@ import TaskList from './components/TaskList.vue';
   @delete-sub-task="deleteSubTask"
   @generateStartSubTask="generateStartSubTask"
   @set-type-task="setTypeTask"
-  @repeat-task="repeatTask" />
-  <button @click="sortTasks">test</button>
+  @repeat-task="repeatTask"
+  @create-sub-task="createSubTask"/>
+  <button @click="createSubTask(1)">test</button>
 </template>
 
 <style scoped>

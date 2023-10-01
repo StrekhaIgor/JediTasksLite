@@ -12,7 +12,8 @@ export default {
         'changeVisibleSubTasks',
         'generateStartSubTask',
         'setTypeTask',
-        'repeatTask'
+        'repeatTask',
+        'createSubTask'
     ],
     computed: {
         date: {
@@ -94,6 +95,11 @@ export default {
         <img v-if="this.task.isRepeat" 
         src="/src/components/icons/repeat.svg"
         class="type-icon picked">
+        <button v-if="taskListId === 2"
+        class="add-sub-task"
+        @click.stop="this.$emit('createSubTask')">
+            Добавить подзадачу
+        </button>
     </div>
     <button 
     @click="$emit('moveTaskToProjects')" 
@@ -144,6 +150,7 @@ export default {
 div.container-task {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 50vw;
     border: 1px solid black;
 }
@@ -155,6 +162,8 @@ div.task-date-wrapper {
 
 div.container-type-task-icon {
     flex-grow: 1;
+    display: flex;
+    align-items: center;
 }
 
 p {
@@ -180,6 +189,10 @@ img.picked {
 
 button {
     height: max-content;
+}
+
+button.add-sub-task {
+    display: block;
 }
 
 </style>
