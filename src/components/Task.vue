@@ -35,12 +35,7 @@ export default {
             return this.task.isDone;
         },
         executeDate() {
-            let today = new Date().toLocaleDateString();
-            if (this.task.executeDate.toLocaleDateString() === today) {
-                return 'Сегодня';
-            } else {
-                return this.task.executeDate.toLocaleDateString();
-            }
+            return new Date(this.task.executeDate).toLocaleDateString();
         },
         srcIconTypeTask() {
             switch(this.task.typeTask) {
@@ -52,7 +47,10 @@ export default {
                     return '/src/components/icons/jobTask.svg';
                 default: return '';
             }
-        }
+        },
+        listSubTasks() {
+            return JSON.stringify(this.task.subTasks);
+        },
     },
     methods: {
         changeEditTask() {
@@ -68,6 +66,12 @@ export default {
     watch: {
         isDone() {
             if (this.task.isDone) this.delayDelete();
+        },
+        listSubTasks() {
+            console.log(this.task);
+            if (this.task.subTasks.length === 0 && this.taskListId === 2) {
+                this.$emit('generateStartSubTask', this.task.id, this.message);
+            }
         }
     }
 }

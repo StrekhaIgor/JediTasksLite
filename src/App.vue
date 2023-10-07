@@ -6,64 +6,8 @@ import TaskList from './components/TaskList.vue';
     data() { 
       return {
         taskLists: [
-          {
-            listName: 'Задачи',
-            id: 1,
-            isSelect: false,
-            isEdit: false,
-            tasks: [
-              {
-                value: 'сходить за хлебом',
-                id: 1,
-                isDone: false,
-                isEdit: false,
-                executeDate: new Date(2023, 11, 1),
-                typeTask: 'home'
-              },
-              {
-                value: 'написать приложуху',
-                id: 2,
-                isDone: false,
-                isEdit: false,
-                executeDate: new Date(2023, 10, 1),
-                typeTask: 'hobbie'
-              }
-            ]
-          },
-          {
-            listName: 'Проекты',
-            id: 2,
-            isSelect: true,
-            isEdit: false,
-            tasks: [
-              {
-                value: 'выучить Vue3',
-                id: 1,
-                isDone: false,
-                isEdit: false,
-                isShowSubTasks: true,
-                subTasks: [
-                  {
-                    id: 1,
-                    value: '123',
-                    isDone: false,
-                    isEdit: false,
-                    date: new Date,
-                  }
-                ]
-              },
-              {
-                value: 'Выучить PHP',
-                id: 2,
-                isDone: false,
-                isEdit: false,
-                isShowSubTasks: true,
-                subTasks: [],
-              }
-            ]
-          }
         ],
-        count: 'one',
+        count: 100,
       }
     },
     computed: {
@@ -74,6 +18,9 @@ import TaskList from './components/TaskList.vue';
         return this.taskLists
         .filter((el) => el.isSelect)[0];
       },
+      jsonTaskLists() {
+        return JSON.stringify(this.taskLists);
+      }
     },
     components: {
       HeaderApp,
@@ -164,6 +111,7 @@ import TaskList from './components/TaskList.vue';
         let targetSubTask = targetProject.subTasks
         .filter((subTask) => subTask.id === subTaskId)[0];
         targetSubTask.isEdit = !targetSubTask.isEdit;
+        this.deleteStartSubTask(projectId);
       },
       changeVisibleSubTasks(projectId) {
         let projectList = this.taskLists[1].tasks;
@@ -181,24 +129,33 @@ import TaskList from './components/TaskList.vue';
       },
       createSubTask(projectId) {
         let targetProject = this.getTargetTask(2, projectId);
+        targetProject.isShowSubTasks = true;
         let subTask = {
           isEdit: true,
+          projectId: projectId,
         };
         subTask.id = Math.max(...targetProject.subTasks.map((elem) => elem.id)) + 1;
         targetProject.subTasks.push(subTask);
       },
       generateStartSubTask(projectId, message) {
+        console.log(projectId);
         let startTask = {};
         startTask.id = 0;
+        startTask.projectId = projectId;
         startTask.value = message;
         startTask.isDone = false;
         startTask.isEdit = false;
+        console.log(this.taskLists[1].tasks);
         let targetSubTasks =
           this.taskLists[1]
           .tasks
           .filter(project => project.id === projectId)[0];
         targetSubTasks.subTasks = targetSubTasks.subTasks.filter(subTask => subTask.id !== 0);
         targetSubTasks.subTasks.unshift(startTask);
+      },
+      deleteStartSubTask(projectId) {
+        let targetProject = this.getTargetTask(2, projectId);
+        targetProject.subTasks = targetProject.subTasks.filter((el) => el.id !== 0);
       },
       sortTasks() {
         this.taskLists[0].tasks.sort((a, b) => a.executeDate - b.executeDate);
@@ -210,10 +167,38 @@ import TaskList from './components/TaskList.vue';
       repeatTask(taskId) {
         let targetTask = this.getTargetTask(1, taskId);
         targetTask.isRepeat = !targetTask.isRepeat;
+      },
+      updateStore() {
+        localStorage.setItem('appData', JSON.stringify(this.taskLists));
+      },
+      emitSubTask() {
+        let projectList = this.taskLists[1].tasks;
+        let taskList = this.taskLists[0].tasks;
+        for (let project of projectList) {
+          for (let subTask of project.subTasks) {
+            let newTask = {
+              projectId: project.id,
+              value: subTask.value,
+              isEdit: false,
+              isShow: true,
+              subTasks: [],
+              id: this.count++,
+            };
+            taskList.push(newTask);
+          }
+        }
       }
+    },
+    created() {
+      this.taskLists = JSON.parse(localStorage.getItem('appData'));
     },
     mounted() {
       this.sortTasks();
+    },
+    watch: {
+      jsonTaskLists() {
+        this.updateStore();
+      }
     }
   }
 </script>
@@ -238,7 +223,7 @@ import TaskList from './components/TaskList.vue';
   @set-type-task="setTypeTask"
   @repeat-task="repeatTask"
   @create-sub-task="createSubTask"/>
-  <button @click="createSubTask(1)">test</button>
+  <button @click="emitSubTask">test</button>
 </template>
 
 <style scoped>

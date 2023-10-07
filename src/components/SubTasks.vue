@@ -2,25 +2,30 @@
 import SubTask from './SubTask.vue';
 export default {
     props: {
-        subTasks: Array,
-        projectId: Number,
+        project: Object,
     },
     components: {
         SubTask,
     },
+    computed: {
+        message() {
+            return 'Cоздать задачу для проекта ' + this.project.value;
+        }
+    },
     emits: [
         'changeEditSubTask',
         'deleteSubTask',
-    ]
+    ],
 }
 </script>
 
 <template>
     <div class="subtask">
-        <sub-task v-for="subtask in subTasks"
+        <sub-task v-for="subtask in project.subTasks"
         :sub-task="subtask"
-        @change-edit-sub-task="this.$emit('changeEditSubTask', this.projectId, subtask.id)"
-        @delete-sub-task="this.$emit('deleteSubTask', this.projectId, subtask.id)" />
+        :key="subtask.id"
+        @change-edit-sub-task="this.$emit('changeEditSubTask', this.project.id, subtask.id)"
+        @delete-sub-task="this.$emit('deleteSubTask', this.project.id, subtask.id)" />
     </div>
 </template>
 

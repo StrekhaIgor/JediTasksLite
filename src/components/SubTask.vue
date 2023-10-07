@@ -21,7 +21,7 @@ export default {
 </div>
 <div class="container-task" v-if="subTask.isEdit">
     <input type="text" v-model="subTask.value">
-    <button @click="$emit('deleteTask')">Удалить</button>
+    <button @click="$emit('deleteSubTask')">Удалить</button>
     <button @click="$emit('changeEditSubTask')">Сохранить</button>
 </div>
 

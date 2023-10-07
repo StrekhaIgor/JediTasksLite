@@ -89,8 +89,7 @@ export default {
         @create-sub-task="$emit('createSubTask', task.id)" />
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
-            :sub-tasks="task.subTasks"
-            :project-id="task.id"
+            :project="task"
             @change-edit-sub-task="changeEditSubTask"
             @delete-sub-task="deleteSubTask"/>
         </template>
