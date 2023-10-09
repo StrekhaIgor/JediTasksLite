@@ -34,6 +34,7 @@ import TaskList from './components/TaskList.vue';
         for (let list of this.taskLists) {
           list.isSelect = (list.listName === listName);
         };
+        this.emitSubTask();
       },
       getTargetList(listId) {
         return this.taskLists
@@ -52,7 +53,16 @@ import TaskList from './components/TaskList.vue';
       deleteTask(listId, taskId) {
         let targetList = this.getTargetList(listId)
         .tasks;
-        targetList.splice(targetList.findIndex((el) => el.id === taskId), 1);
+        let targetTasks = targetList.splice(targetList.findIndex((el) => el.id === taskId), 1);
+        let projectId = targetTasks[0].projectId;
+        if (projectId) {
+          this.deleteSubTask(targetTasks[0].projectId, targetTasks[0].selfId);
+          let targetTask = this.getTargetTask(2, projectId);
+          if (!targetTask.subTasks.length) {
+            this.generateStartSubTask(projectId, this._generateMessage(projectId));
+          };
+        };
+        this.emitSubTask();
         this.refreshTaskId();
       },
       changeEditTask(listId, taskId) {
@@ -137,15 +147,17 @@ import TaskList from './components/TaskList.vue';
         subTask.id = Math.max(...targetProject.subTasks.map((elem) => elem.id)) + 1;
         targetProject.subTasks.push(subTask);
       },
+      _generateMessage(projectId) {
+        let targetProject = this.getTargetTask(2, projectId);
+        return 'Cоздать задачу для проекта ' + targetProject.value;
+      },
       generateStartSubTask(projectId, message) {
-        console.log(projectId);
         let startTask = {};
         startTask.id = 0;
         startTask.projectId = projectId;
         startTask.value = message;
         startTask.isDone = false;
         startTask.isEdit = false;
-        console.log(this.taskLists[1].tasks);
         let targetSubTasks =
           this.taskLists[1]
           .tasks
@@ -173,11 +185,17 @@ import TaskList from './components/TaskList.vue';
       },
       emitSubTask() {
         let projectList = this.taskLists[1].tasks;
+        this.taskLists[0].tasks = this.taskLists[0].tasks
+        .filter((task) => !task.projectId);
         let taskList = this.taskLists[0].tasks;
         for (let project of projectList) {
+          let projectTasksInList = taskList
+          .filter((task) => task.projectId === project.id);
+          if (projectTasksInList.length) continue;
           for (let subTask of project.subTasks) {
             let newTask = {
               projectId: project.id,
+              selfId: subTask.id,
               value: subTask.value,
               isEdit: false,
               isShow: true,
@@ -185,12 +203,34 @@ import TaskList from './components/TaskList.vue';
               id: this.count++,
             };
             taskList.push(newTask);
+            break;
           }
         }
       }
     },
     created() {
-      this.taskLists = JSON.parse(localStorage.getItem('appData'));
+      let start = [
+        {
+          listName: 'Задачи',
+          id: 1,
+          isEdit: false,
+          isSelect: false,
+          tasks: [],
+        },
+        {
+          listName: 'Проекты',
+          id: 2,
+          isEdit: false,
+          isSelect: true,
+          tasks: [],
+        }
+      ];
+      let data = JSON.parse(localStorage.getItem('appData'));
+      if (data) {
+        this.taskLists = JSON.parse(localStorage.getItem('appData'));
+      } else {
+        this.taskLists = start;
+      };
     },
     mounted() {
       this.sortTasks();

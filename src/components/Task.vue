@@ -68,7 +68,6 @@ export default {
             if (this.task.isDone) this.delayDelete();
         },
         listSubTasks() {
-            console.log(this.task);
             if (this.task.subTasks.length === 0 && this.taskListId === 2) {
                 this.$emit('generateStartSubTask', this.task.id, this.message);
             }
