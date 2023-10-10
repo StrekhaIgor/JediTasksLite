@@ -31,7 +31,7 @@ export default {
         'generateStartSubTask',
         'setTypeTask',
         'repeatTask',
-        'createSubTask'
+        'createSubTask',
     ],
     methods: {
         createNewList() {
@@ -55,12 +55,12 @@ export default {
         deleteSubTask(projectId, subTaskId) {
             this.$emit('deleteSubTask', projectId, subTaskId);
         },
-        generateStartSubTask(projectId, message) {
-            this.$emit('generateStartSubTask', projectId, message);
+        generateStartSubTask(projectId) {
+            this.$emit('generateStartSubTask', projectId);
         },
         setTypeTask(taskListId, taskId, value) {
             this.$emit('setTypeTask', taskListId, taskId, value);
-        }
+        },
     }
 }
 
@@ -86,7 +86,7 @@ export default {
         @generate-start-sub-task="generateStartSubTask"
         @set-type-task="setTypeTask"
         @repeat-task="$emit('repeatTask', task.id)"
-        @create-sub-task="$emit('createSubTask', task.id)" />
+        @create-sub-task="$emit('createSubTask', task.id)"/>
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
             :project="task"

@@ -42,7 +42,9 @@ import TaskList from './components/TaskList.vue';
       },
       getTargetTask(listId, taskId) {
         for (let task of this.getTargetList(listId).tasks) {
-          if (task.id === taskId) return task;
+          if (task.id === taskId) {
+            return task;
+          };
         }
       },
       refreshTaskId() {
@@ -90,6 +92,10 @@ import TaskList from './components/TaskList.vue';
           };
         }
         let movedTask = taskList.splice(index, 1)[0];
+        if (movedTask.projectId) {
+          this.emitSubTask();
+          return;
+        };
         movedTask.id = this.taskLists[1].tasks.length + 1;
         this.taskLists[1].tasks.push(movedTask);
       },
@@ -151,11 +157,11 @@ import TaskList from './components/TaskList.vue';
         let targetProject = this.getTargetTask(2, projectId);
         return 'Cоздать задачу для проекта ' + targetProject.value;
       },
-      generateStartSubTask(projectId, message) {
+      generateStartSubTask(projectId) {
         let startTask = {};
         startTask.id = 0;
         startTask.projectId = projectId;
-        startTask.value = message;
+        startTask.value = 'Создать задачу';
         startTask.isDone = false;
         startTask.isEdit = false;
         let targetSubTasks =
@@ -195,6 +201,7 @@ import TaskList from './components/TaskList.vue';
           for (let subTask of project.subTasks) {
             let newTask = {
               projectId: project.id,
+              projectName: project.value,
               selfId: subTask.id,
               value: subTask.value,
               isEdit: false,
@@ -263,7 +270,7 @@ import TaskList from './components/TaskList.vue';
   @set-type-task="setTypeTask"
   @repeat-task="repeatTask"
   @create-sub-task="createSubTask"/>
-  <button @click="emitSubTask">test</button>
+  <button @click="console.log(getTargetTask(2, 1))">test</button>
 </template>
 
 <style scoped>

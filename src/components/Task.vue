@@ -13,7 +13,7 @@ export default {
         'generateStartSubTask',
         'setTypeTask',
         'repeatTask',
-        'createSubTask'
+        'createSubTask',
     ],
     computed: {
         date: {
@@ -27,9 +27,6 @@ export default {
             set(executeDate) {
                 this.$emit('setExecuteDate', this.taskListId, this.task.id, new Date(executeDate));
             }
-        },
-        message() {
-            return "Создайте задачу для проекта " + this.task.value;
         },
         isDone() {
             return this.task.isDone;
@@ -51,6 +48,9 @@ export default {
         listSubTasks() {
             return JSON.stringify(this.task.subTasks);
         },
+        projectName() {
+            return 'Проект: ' + this.task.projectName;
+        }
     },
     methods: {
         changeEditTask() {
@@ -61,7 +61,7 @@ export default {
         },
         delayDelete() {
             setTimeout(() => this.$emit('deleteTask'), 1000);
-        }
+        },
     },
     watch: {
         isDone() {
@@ -69,7 +69,7 @@ export default {
         },
         listSubTasks() {
             if (this.task.subTasks.length === 0 && this.taskListId === 2) {
-                this.$emit('generateStartSubTask', this.task.id, this.message);
+                this.$emit('generateStartSubTask', this.task.id);
             }
         }
     }
@@ -87,6 +87,9 @@ export default {
         :class="{ done: task.isDone}">{{ task.value }}</p>
         <p v-if="this.task.executeDate">
             {{ this.executeDate }}
+        </p>
+        <p class="project-name" v-if="this.task.projectId">
+            {{ this.projectName }}
         </p>
     </div>
     <div class="container-type-task-icon"
@@ -177,6 +180,10 @@ p.done {
     text-decoration: line-through;
 }
 
+p.project-name {
+    color: red;
+}
+
 img.type-icon {
     width: 30px;
     height: 30px;
@@ -197,5 +204,6 @@ button {
 button.add-sub-task {
     display: block;
 }
+
 
 </style>
