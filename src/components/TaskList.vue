@@ -32,6 +32,7 @@ export default {
         'setTypeTask',
         'repeatTask',
         'createSubTask',
+        'filterTaskList'
     ],
     methods: {
         createNewList() {
@@ -61,6 +62,9 @@ export default {
         setTypeTask(taskListId, taskId, value) {
             this.$emit('setTypeTask', taskListId, taskId, value);
         },
+        filterTaskList(arrayOfFilters) {
+            this.$emit('filterTaskList', arrayOfFilters);
+        }
     }
 }
 
@@ -70,13 +74,15 @@ export default {
 
 <div class="container-tasks">
     <task-list-tool-bar v-if="!selectedList.isEdit"
-    @add-new-task="$emit('addNewTask')"/>
+    @add-new-task="$emit('addNewTask')"
+    @filterTaskList="filterTaskList"/>
     <input type="text" v-if="selectedList.isEdit" v-model="this.listName"
     @blur="createNewList"
     @keyup.enter="createNewList"
     @click="clearInputName">
     <template v-for="task in selectedList.tasks">
-        <task :task="task"
+        <task v-if="task.isShow"
+        :task="task"
         :task-list-id="selectedList.id"
         @delete-task="$emit('deleteTask', selectedList.id, task.id)"
         @change-edit-task="$emit('changeEditTask', selectedList.id, task.id)"
@@ -89,6 +95,7 @@ export default {
         @create-sub-task="$emit('createSubTask', task.id)"/>
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
+            v-if="task.isShow"
             :project="task"
             @change-edit-sub-task="changeEditSubTask"
             @delete-sub-task="deleteSubTask"/>

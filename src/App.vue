@@ -75,7 +75,9 @@ import TaskList from './components/TaskList.vue';
       addNewTask() {
         let newTask = {};
         newTask.isEdit = true;
+        newTask.isShow = true;
         newTask.subTasks = [];
+        newTask.isShowSubTasks = true;
         this.selectedList.tasks.unshift(newTask);
         this.refreshTaskId();
         this.sortTasks();
@@ -149,6 +151,7 @@ import TaskList from './components/TaskList.vue';
         let subTask = {
           isEdit: true,
           projectId: projectId,
+          typeTask: targetProject.typeTask,
         };
         subTask.id = Math.max(...targetProject.subTasks.map((elem) => elem.id)) + 1;
         targetProject.subTasks.push(subTask);
@@ -169,6 +172,7 @@ import TaskList from './components/TaskList.vue';
           .tasks
           .filter(project => project.id === projectId)[0];
         targetSubTasks.subTasks = targetSubTasks.subTasks.filter(subTask => subTask.id !== 0);
+        startTask.typeTask = targetSubTasks.typeTask;
         targetSubTasks.subTasks.unshift(startTask);
       },
       deleteStartSubTask(projectId) {
@@ -207,10 +211,22 @@ import TaskList from './components/TaskList.vue';
               isEdit: false,
               isShow: true,
               subTasks: [],
+              typeTask: project.typeTask,
               id: this.count++,
             };
             taskList.push(newTask);
             break;
+          }
+        }
+      },
+      filterTaskList(arrayOfFilters) {
+        for (let taskList of this.taskLists) { 
+          for (let task of taskList.tasks) {
+            if (task.typeTask && arrayOfFilters.includes(task.typeTask)) {
+              task.isShow = true;
+            } else {
+              task.isShow = false;
+            }
           }
         }
       }
@@ -269,8 +285,9 @@ import TaskList from './components/TaskList.vue';
   @generateStartSubTask="generateStartSubTask"
   @set-type-task="setTypeTask"
   @repeat-task="repeatTask"
-  @create-sub-task="createSubTask"/>
-  <button @click="console.log(getTargetTask(2, 1))">test</button>
+  @create-sub-task="createSubTask"
+  @filterTaskList="filterTaskList"/>
+  <button @click="filterTaskList(['hobbie'])">test</button>
 </template>
 
 <style scoped>
