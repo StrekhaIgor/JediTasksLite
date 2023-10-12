@@ -23,8 +23,9 @@ export default {
 </script>
 
 <template>
-<div>
-    <button @click="$emit('addNewTask')">Добавить запись</button>
+<div class="tool-bar-wrapper">
+    <button class="button-add-task"
+     @click="$emit('addNewTask')">Добавить запись</button>
     <img 
     class="type-icon"
     :class="{picked: this.pickedFilters.includes('job')}" 
@@ -49,5 +50,17 @@ export default {
 </template>
 
 <style>
+
+.button-add-task {
+    display: block;
+    height: 30px;
+    margin: 2px;
+}
+
+.tool-bar-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
 </style>

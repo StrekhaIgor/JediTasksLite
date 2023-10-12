@@ -287,7 +287,6 @@ import TaskList from './components/TaskList.vue';
   @repeat-task="repeatTask"
   @create-sub-task="createSubTask"
   @filterTaskList="filterTaskList"/>
-  <button @click="filterTaskList(['hobbie'])">test</button>
 </template>
 
 <style scoped>

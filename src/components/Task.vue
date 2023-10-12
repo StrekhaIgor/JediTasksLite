@@ -48,9 +48,6 @@ export default {
         listSubTasks() {
             return JSON.stringify(this.task.subTasks);
         },
-        projectName() {
-            return 'Проект: ' + this.task.projectName;
-        }
     },
     methods: {
         changeEditTask() {
@@ -89,7 +86,8 @@ export default {
             {{ this.executeDate }}
         </p>
         <p class="project-name" v-if="this.task.projectId">
-            {{ this.projectName }}
+            Проект: <br>
+            {{ this.task.projectName }}
         </p>
     </div>
     <div class="container-type-task-icon"
@@ -153,17 +151,26 @@ export default {
 
 <style>
 
+input {
+    margin: 3px;
+}
+
 div.container-task {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 50vw;
-    border: 1px solid black;
+    min-height: 5vw;
+    background-color: beige;
+    border-radius: 20px;
+    margin: 10px;
 }
 
 div.task-date-wrapper {
     display: flex;
     flex-direction: column;
+    max-width: 20vw;
+    flex-grow: 50;
 }
 
 div.container-type-task-icon {
@@ -181,7 +188,7 @@ p.done {
 }
 
 p.project-name {
-    color: red;
+    color:blue;
 }
 
 img.type-icon {
@@ -191,6 +198,7 @@ img.type-icon {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid black;
+    display: block;
 }
 
 img.picked {
@@ -198,7 +206,10 @@ img.picked {
 }
 
 button {
-    height: max-content;
+    height: 30px;
+    min-width: max-content;
+    flex-wrap: nowrap;
+    margin: 2px;
 }
 
 button.add-sub-task {
