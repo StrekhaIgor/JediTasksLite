@@ -32,22 +32,19 @@ export default {
             return this.task.isDone;
         },
         executeDate() {
-            return new Date(this.task.executeDate).toLocaleDateString();
-        },
-        srcIconTypeTask() {
-            switch(this.task.typeTask) {
-                case 'home':
-                    return '/src/components/icons/homeTask.svg';
-                case 'hobbie':
-                    return '/src/components/icons/hobbieTask1.svg';
-                case 'job':
-                    return '/src/components/icons/jobTask.svg';
-                default: return '';
-            }
+            let taskDate = new Date(this.task.executeDate).toLocaleDateString();
+            if (taskDate === new Date().toLocaleDateString()) {
+                return 'Сегодня';
+            } else return taskDate;
         },
         listSubTasks() {
             return JSON.stringify(this.task.subTasks);
         },
+        isShowRepeat() {
+            if (!this.task.isRepeat) return true;
+            if (this.task.executeDate.getDate() === new Date().getDate()) return true;
+            return false;
+        }
     },
     methods: {
         changeEditTask() {
@@ -76,7 +73,7 @@ export default {
 
 <template>
 
-<div class="container-task" v-if="!task.isEdit">
+<div class="container-task" v-if="!task.isEdit && this.isShowRepeat">
     <input type="checkbox" v-model="task.isDone">
     <div class="task-date-wrapper"
     @click="$emit('changeEditTask')">
@@ -92,9 +89,17 @@ export default {
     </div>
     <div class="container-type-task-icon"
     @click="$emit('changeEditTask')">
-        <img :src="srcIconTypeTask" 
-        class="type-icon picked" 
-        v-if="this.task.typeTask"
+        <img v-if="this.task.typeTask === 'home'"
+        src="/src/components/icons/homeTask.svg" 
+        class="type-icon picked"
+        :title="this.task.typeTask">
+        <img v-if="this.task.typeTask === 'job'"
+        src="/src/components/icons/jobTask.svg" 
+        class="type-icon picked"
+        :title="this.task.typeTask">
+        <img v-if="this.task.typeTask === 'hobbie'"
+        src="/src/components/icons/hobbieTask1.svg" 
+        class="type-icon picked"
         :title="this.task.typeTask">
         <img v-if="this.task.isRepeat" 
         src="/src/components/icons/repeat.svg"

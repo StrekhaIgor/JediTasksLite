@@ -7,7 +7,6 @@ import TaskList from './components/TaskList.vue';
       return {
         taskLists: [
         ],
-        count: 100,
       }
     },
     computed: {
@@ -55,15 +54,20 @@ import TaskList from './components/TaskList.vue';
       deleteTask(listId, taskId) {
         let targetList = this.getTargetList(listId)
         .tasks;
-        let targetTasks = targetList.splice(targetList.findIndex((el) => el.id === taskId), 1);
-        let projectId = targetTasks[0].projectId;
+        let targetTask = targetList.splice(targetList.findIndex((el) => el.id === taskId), 1)[0];
+        let projectId = targetTask.projectId;
         if (projectId) {
-          this.deleteSubTask(targetTasks[0].projectId, targetTasks[0].selfId);
-          let targetTask = this.getTargetTask(2, projectId);
-          if (!targetTask.subTasks.length) {
+          this.deleteSubTask(targetTask.projectId, targetTask.selfId);
+          let targetProject = this.getTargetTask(2, projectId);
+          if (!targetProject.subTasks.length) {
             this.generateStartSubTask(projectId, this._generateMessage(projectId));
           };
         };
+        if (targetTask.isRepeat) {
+          targetTask.isDone = false;
+          targetTask.executeDate.setDate(targetTask.executeDate.getDate() + 1);
+          this.taskLists[0].tasks.push(targetTask);
+        }
         this.emitSubTask();
         this.refreshTaskId();
       },
@@ -78,9 +82,9 @@ import TaskList from './components/TaskList.vue';
         newTask.isShow = true;
         newTask.subTasks = [];
         newTask.isShowSubTasks = true;
+        newTask.executeDate = new Date();
         this.selectedList.tasks.unshift(newTask);
         this.refreshTaskId();
-        this.sortTasks();
       },
       moveTaskToProjects(taskListId, taskId) {
         let taskList = this.taskLists
@@ -212,7 +216,8 @@ import TaskList from './components/TaskList.vue';
               isShow: true,
               subTasks: [],
               typeTask: project.typeTask,
-              id: this.count++,
+              id: this.taskLists[0].tasks.length + 1,
+              executeDate: new Date(),
             };
             taskList.push(newTask);
             break;
@@ -251,6 +256,9 @@ import TaskList from './components/TaskList.vue';
       let data = JSON.parse(localStorage.getItem('appData'));
       if (data) {
         this.taskLists = JSON.parse(localStorage.getItem('appData'));
+        for (let task of this.taskLists[0].tasks) {
+          task.executeDate = new Date(task.executeDate);
+        }
       } else {
         this.taskLists = start;
       };
