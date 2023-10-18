@@ -84,8 +84,7 @@ export default {
             {{ this.executeDate }}
         </p>
         <p class="project-name" v-if="this.task.projectId">
-            Проект: 
-            {{ this.task.projectName }}
+            Проект: {{ this.task.projectName }}
         </p>
     </div>
     <div class="container-type-task-icon"
