@@ -110,13 +110,13 @@ export default {
             Добавить подзадачу
         </button>
     </div>
-    <button 
+    <button
     @click="$emit('moveTaskToProjects')" 
-    v-if="taskListId !== 2"
+    v-if="taskListId !== 2 && !task.projectId"
     class="button-to-project"
     >В проекты</button>
     <button 
-    v-else 
+    v-if="taskListId === 2" 
     @click="this.$emit('changeVisibleSubTasks', task.id)"
     >Показать задачи</button>
 </div>
@@ -252,6 +252,7 @@ img.type-icon {
     border-radius: 5px;
     border: 1px solid black;
     display: block;
+    margin-right: 10px;
 }
 
 img.picked {
