@@ -74,16 +74,17 @@ export default {
 <template>
 
 <div class="container-task" v-if="!task.isEdit && this.isShowRepeat">
-    <input type="checkbox" v-model="task.isDone">
+    <input type="checkbox" :id="task.id"
+    v-model="task.isDone">
     <div class="task-date-wrapper"
     @click="$emit('changeEditTask')">
         <p 
         :class="{ done: task.isDone}">{{ task.value }}</p>
-        <p v-if="this.task.executeDate">
+        <p v-if="this.task.executeDate" class="execute-date">
             {{ this.executeDate }}
         </p>
         <p class="project-name" v-if="this.task.projectId">
-            Проект: <br>
+            Проект: 
             {{ this.task.projectName }}
         </p>
     </div>
@@ -121,9 +122,11 @@ export default {
     >Показать задачи</button>
 </div>
 <div class="container-task" v-if="task.isEdit">
-    <input type="checkbox" v-model="task.isDone">
-    <div class="task-date-wrapper">
-        <input type="text" v-model="task.value" 
+    <input type="checkbox" :id="task.id"
+    v-model="task.isDone">
+    <div class="task-date-wrapper-edit">
+        <input type="text" :id="task.id"
+        v-model="task.value" 
         @keyup.enter="changeEditTask">
         <input type="date" v-model="this.date">
     </div>
@@ -160,32 +163,78 @@ input {
     margin: 3px;
 }
 
-div.container-task {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 50vw;
-    min-height: 5vw;
-    background-color: beige;
-    border-radius: 20px;
-    margin: 10px;
+div.task-date-wrapper-edit {
+        display: flex;
+        flex-direction: column;
+        max-width: 20vw;
+        flex-grow: 50;
 }
 
-div.task-date-wrapper {
-    display: flex;
-    flex-direction: column;
-    max-width: 20vw;
-    flex-grow: 50;
+div.task-date-wrapper-edit input {
+    max-width: 40vw;
 }
 
-div.container-type-task-icon {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
+@media (min-width: 600px) {
+    div.task-date-wrapper {
+        display: flex;
+        flex-direction: column;
+        max-width: 20vw;
+        flex-grow: 50;
+    }
+    div.container-type-task-icon {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+    }
+    div.container-task {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 50vw;
+        min-height: 5vw;
+        background-color: beige;
+        border-radius: 20px;
+        margin: 10px;
+        border: 1px solid black;
+    }
+}
+
+@media (max-width: 600px) {
+    div.task-date-wrapper {
+        display: flex;
+        flex-direction: row;
+        max-width: 100%;
+        flex-grow: 50;
+        align-items: center;
+    }
+    div.container-type-task-icon {
+        flex-grow: 0;
+        display: flex;
+        align-items: center;
+    }
+    div.container-task {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: calc(100% - 20px);
+        min-height: 5vw;
+        background-color: beige;
+        border-radius: 20px;
+        margin: 10px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        border: 1px solid black;
+    }
 }
 
 p {
     padding: 5px 10px;
+    max-width: 50vw;
+    overflow-wrap:break-word;
+}
+
+p.execute-date {
+    color: purple;
 }
 
 p.done {
@@ -215,6 +264,8 @@ button {
     min-width: max-content;
     flex-wrap: nowrap;
     margin: 2px;
+    border-radius: 15px;
+    padding: 3px;
 }
 
 button.add-sub-task {

@@ -39,7 +39,9 @@ export default {
 
 <template>
     <div class="header">
-        <img src="./icons/mainIcon.png" alt="Icon" class="main-icon">
+        <div>
+            <img src="./icons/mainIcon.png" alt="Icon" class="main-icon">
+        </div>
         <h1>
             Jedi Tasks<span>Lite</span>
         </h1>

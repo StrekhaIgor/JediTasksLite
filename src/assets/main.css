@@ -11,3 +11,17 @@ div#app {
     margin: auto;
     background-color: whitesmoke;
 }
+
+@media screen and (max-width:600px) {
+    div#app {
+        width: 100%;
+    }
+
+    div.header h1 {
+        display: none;
+    }
+
+    div.header div {
+        flex-grow: 1;
+    }
+}
