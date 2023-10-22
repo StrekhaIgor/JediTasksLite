@@ -5,9 +5,13 @@ export default {
             pickedFilters: ['job', 'home', 'hobbie']
         }
     },
+    props: {
+        'selectedList': Object,
+    },
     emits: [
         'addNewTask',
-        'filterTaskList'
+        'filterTaskList',
+        'deleteTaskList'
     ],
     methods: {
         pickFilter(value) {
@@ -24,8 +28,11 @@ export default {
 
 <template>
 <div class="tool-bar-wrapper">
-    <button class="button-add-task"
-     @click="$emit('addNewTask')">Добавить запись</button>
+    <img
+    src="./icons/add.svg"
+    class="type-icon control"
+    title="Добавить запись"
+    @click="$emit('addNewTask')">
     <img 
     class="type-icon"
     :class="{picked: this.pickedFilters.includes('job')}" 
@@ -44,6 +51,12 @@ export default {
     src="./icons/hobbieTask1.svg" 
     @click="this.pickFilter('hobbie')"
     alt="hobbie">
+    <img 
+    v-if="this.selectedList.id > 2"
+    src="./icons/delete.svg"
+    class="type-icon control"
+    @click="this.$emit('deleteTaskList')">
+
 </div>
 
 

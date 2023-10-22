@@ -32,7 +32,8 @@ export default {
         'setTypeTask',
         'repeatTask',
         'createSubTask',
-        'filterTaskList'
+        'filterTaskList',
+        'deleteTaskList'
     ],
     methods: {
         createNewList() {
@@ -74,8 +75,10 @@ export default {
 
 <div class="container-tasks">
     <task-list-tool-bar v-if="!selectedList.isEdit"
+    :selected-list="this.selectedList"
     @add-new-task="$emit('addNewTask')"
-    @filterTaskList="filterTaskList"/>
+    @filterTaskList="filterTaskList"
+    @delete-task-list="this.$emit('deleteTaskList', this.selectedList.id)"/>
     <input type="text" v-if="selectedList.isEdit" v-model="this.listName"
     @blur="createNewList"
     @keyup.enter="createNewList"

@@ -104,21 +104,28 @@ export default {
         <img v-if="this.task.isRepeat" 
         src="/src/components/icons/repeat.svg"
         class="type-icon picked">
-        <button v-if="taskListId === 2"
-        class="add-sub-task"
+        <img v-if="taskListId === 2"
+        title="Добавить задачу"
+        src="/src/components/icons/add.svg"
+        class="type-icon control"
         @click.stop="this.$emit('createSubTask')">
-            Добавить подзадачу
-        </button>
     </div>
-    <button
+    <img
+    src="./icons/start-project.svg"
+    title="Начать проект"
     @click="$emit('moveTaskToProjects')" 
-    v-if="taskListId !== 2 && !task.projectId"
-    class="button-to-project"
-    >В проекты</button>
-    <button 
+    v-if="taskListId !== 2"
+    class="type-icon control"
+    >
+    <img 
+    src="./icons/show-list.svg"
+    title="Показать подзадачи"
+    class="type-icon"
+    :class="{picked: this.task.isShowSubTasks,
+            control: !this.task.isShowSubTasks}"
     v-if="taskListId === 2" 
     @click="this.$emit('changeVisibleSubTasks', task.id)"
-    >Показать задачи</button>
+    >
 </div>
 <div class="container-task" v-if="task.isEdit">
     <input type="checkbox" :id="task.id"
@@ -152,7 +159,11 @@ export default {
         :class="{picked: this.task.isRepeat}"
         title="repeat">
     </div>
-    <button @click="changeEditTask">Сохранить</button>
+    <img 
+    src="./icons/save.svg"
+    class="type-icon control"
+    title="Сохранить"
+    @click="changeEditTask">
 </div>
 </template>
 
@@ -189,12 +200,13 @@ div.task-date-wrapper-edit input {
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 50vw;
+        width: calc(100% - 20px);
         min-height: 5vw;
         background-color: beige;
         border-radius: 20px;
         margin: 10px;
         border: 1px solid black;
+        flex-wrap:nowrap;
     }
 }
 
@@ -203,11 +215,11 @@ div.task-date-wrapper-edit input {
         display: flex;
         flex-direction: row;
         max-width: 100%;
-        flex-grow: 50;
+        flex: 1, 2, auto;
         align-items: center;
+        overflow: break-word;
     }
     div.container-type-task-icon {
-        flex-grow: 0;
         display: flex;
         align-items: center;
     }
@@ -218,22 +230,26 @@ div.task-date-wrapper-edit input {
         width: calc(100% - 20px);
         min-height: 5vw;
         background-color: beige;
-        border-radius: 20px;
+        border-radius: 10px;
         margin: 10px;
         margin-top: 2px;
         margin-bottom: 2px;
         border: 1px solid black;
+        flex-wrap: nowrap;
+        overflow: auto;
     }
 }
 
 p {
     padding: 5px 10px;
     max-width: 50vw;
-    overflow-wrap:break-word;
+    overflow-wrap: break-word;
+    flex-shrink: 2;
 }
 
 p.execute-date {
     color: purple;
+    flex-shrink: 2;
 }
 
 p.done {
@@ -259,12 +275,16 @@ img.picked {
     background-color: greenyellow;
 }
 
+img.control {
+    background-color: coral;
+}
+
 button {
     height: 30px;
     min-width: max-content;
     flex-wrap: nowrap;
     margin: 2px;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 3px;
 }
 

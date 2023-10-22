@@ -18,21 +18,31 @@ export default {
     v-model="subTask.isDone">
     <p @click="$emit('changeEditSubTask')" 
     :class="{ done: subTask.isDone}">{{ subTask.value }}</p>
-    <button @click="$emit('deleteSubTask')">Удалить</button>
+    <img 
+    src="./icons/delete.svg"
+    class="type-icon control"
+    title="Удалить"
+    @click="$emit('deleteSubTask')">
 </div>
 <div class="container-task sub-task" v-if="subTask.isEdit">
     <input type="text" :id="subTask.id"
-    v-model="subTask.value">
-    <button @click="$emit('deleteSubTask')">Удалить</button>
-    <button @click="$emit('changeEditSubTask')">Сохранить</button>
+    v-model="subTask.value"
+    @keypress.enter="$emit('changeEditSubTask')">
+    <img 
+    src="./icons/delete.svg"
+    class="type-icon control"
+    title="Удалить"
+    @click="$emit('deleteSubTask')">
+    <img 
+    src="./icons/save.svg"
+    class="type-icon control"
+    title="Сохранить"
+    @click="$emit('changeEditSubTask')">
 </div>
 
 </template>
 
 <style>
 
-div.sub-task {
-    width: 47vw;
-}
 
 </style>

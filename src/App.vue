@@ -227,6 +227,7 @@ import TaskList from './components/TaskList.vue';
       filterTaskList(arrayOfFilters) {
         for (let taskList of this.taskLists) { 
           for (let task of taskList.tasks) {
+            if (!task.typeTask) continue;
             if (task.typeTask && arrayOfFilters.includes(task.typeTask)) {
               task.isShow = true;
             } else {
@@ -234,6 +235,11 @@ import TaskList from './components/TaskList.vue';
             }
           }
         }
+      },
+      deleteTaskList(taskListId) {
+        if (taskListId === 1 || taskListId === 2) return;
+        this.taskLists = this.taskLists.filter((list) => list.id !== taskListId);
+        this.changeSelected('Задачи');
       }
     },
     created() {
@@ -294,7 +300,8 @@ import TaskList from './components/TaskList.vue';
   @set-type-task="setTypeTask"
   @repeat-task="repeatTask"
   @create-sub-task="createSubTask"
-  @filterTaskList="filterTaskList"/>
+  @filterTaskList="filterTaskList"
+  @delete-task-list="deleteTaskList"/>
 </template>
 
 <style scoped>
