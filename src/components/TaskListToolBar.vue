@@ -21,6 +21,9 @@ export default {
                 this.pickedFilters.push(value);
             };
             this.$emit('filterTaskList', this.pickedFilters);
+        },
+        clearStore() {
+            localStorage.clear();
         }
     }
 }
@@ -56,6 +59,7 @@ export default {
     src="./icons/delete.svg"
     class="type-icon control"
     @click="this.$emit('deleteTaskList')">
+    <!-- <button @click="clearStore()">clearStore</button> -->
 
 </div>
 

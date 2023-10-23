@@ -15,6 +15,7 @@ export default {
     emits: [
         'changeEditSubTask',
         'deleteSubTask',
+        'createSubTask'
     ],
 }
 </script>
@@ -25,7 +26,8 @@ export default {
         :sub-task="subtask"
         :key="subtask.id"
         @change-edit-sub-task="this.$emit('changeEditSubTask', this.project.id, subtask.id)"
-        @delete-sub-task="this.$emit('deleteSubTask', this.project.id, subtask.id)" />
+        @delete-sub-task="this.$emit('deleteSubTask', this.project.id, subtask.id)"
+        @create-sub-task="$emit('createSubTask')" />
     </div>
 </template>
 

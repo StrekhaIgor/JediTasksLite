@@ -83,10 +83,10 @@ export default {
         <p v-if="this.task.executeDate" class="execute-date">
             {{ this.executeDate }}
         </p>
-        <p class="project-name" v-if="this.task.projectId">
-            Проект: {{ this.task.projectName }}
-        </p>
     </div>
+    <p class="project-name" v-if="this.task.projectId">
+        Проект: {{ this.task.projectName }}
+    </p>
     <div class="container-type-task-icon"
     @click="$emit('changeEditTask')">
         <img v-if="this.task.typeTask === 'home'"
@@ -108,7 +108,8 @@ export default {
         title="Добавить задачу"
         src="/src/components/icons/add.svg"
         class="type-icon control"
-        @click.stop="this.$emit('createSubTask')">
+        @click.stop="this.$emit('createSubTask')"
+        >
     </div>
     <img
     src="./icons/start-project.svg"
@@ -188,11 +189,10 @@ div.task-date-wrapper-edit input {
     div.task-date-wrapper {
         display: flex;
         flex-direction: column;
-        max-width: 20vw;
         flex-grow: 50;
     }
     div.container-type-task-icon {
-        flex-grow: 1;
+        flex-grow: 0;
         display: flex;
         align-items: center;
     }
@@ -208,20 +208,23 @@ div.task-date-wrapper-edit input {
         border: 1px solid black;
         flex-wrap:nowrap;
     }
+    p {
+        flex-grow: 1;
+    }
 }
 
 @media (max-width: 600px) {
     div.task-date-wrapper {
         display: flex;
-        flex-direction: row;
-        max-width: 100%;
-        flex: 1, 2, auto;
-        align-items: center;
-        overflow: break-word;
+        flex-direction: column;
+        flex: 50 2 auto;
+        align-items:baseline;
+        min-width: 20vw;
     }
     div.container-type-task-icon {
         display: flex;
         align-items: center;
+        flex: 0, 2, auto;
     }
     div.container-task {
         display: flex;
@@ -243,13 +246,13 @@ div.task-date-wrapper-edit input {
 p {
     padding: 5px 10px;
     max-width: 50vw;
+    min-width: 20vw;
     overflow-wrap: break-word;
-    flex-shrink: 2;
+    flex: 5, 2, auto;
 }
 
 p.execute-date {
     color: purple;
-    flex-shrink: 2;
 }
 
 p.done {
@@ -258,6 +261,9 @@ p.done {
 
 p.project-name {
     color:blue;
+    overflow-wrap: break-word;
+    min-width: 20vw;
+    flex: 1, 2, auto;
 }
 
 img.type-icon {

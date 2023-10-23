@@ -5,8 +5,15 @@ export default {
     },
     emits: [
         'changeEditSubTask',
-        'deleteSubTask'
-    ]
+        'deleteSubTask',
+        'createSubTask'
+    ],
+    methods: {
+        createSubTaskByEnter() {
+            this.$emit('changeEditSubTask');
+            this.$emit('createSubTask');
+        }
+    }
 }
 
 </script>
@@ -17,17 +24,18 @@ export default {
     <input type="checkbox" :id="subTask.id"
     v-model="subTask.isDone">
     <p @click="$emit('changeEditSubTask')" 
+    class="sub-task-text"
     :class="{ done: subTask.isDone}">{{ subTask.value }}</p>
     <img 
     src="./icons/delete.svg"
     class="type-icon control"
     title="Удалить"
-    @click="$emit('deleteSubTask')">
+    @click="$emit('createSubTask')">
 </div>
 <div class="container-task sub-task" v-if="subTask.isEdit">
     <input type="text" :id="subTask.id"
     v-model="subTask.value"
-    @keypress.enter="$emit('changeEditSubTask')">
+    @keypress.enter="createSubTaskByEnter()">
     <img 
     src="./icons/delete.svg"
     class="type-icon control"
@@ -44,5 +52,9 @@ export default {
 
 <style>
 
+p.sub-task-text {
+    flex-grow: 5;
+    max-width: none;
+}
 
 </style>

@@ -101,7 +101,8 @@ export default {
             v-if="task.isShow"
             :project="task"
             @change-edit-sub-task="changeEditSubTask"
-            @delete-sub-task="deleteSubTask"/>
+            @delete-sub-task="deleteSubTask"
+            @create-sub-task="$emit('createSubTask', task.id)"/>
         </template>
     </template>
 </div>
