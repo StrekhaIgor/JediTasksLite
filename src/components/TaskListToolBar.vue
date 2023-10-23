@@ -59,7 +59,7 @@ export default {
     src="./icons/delete.svg"
     class="type-icon control"
     @click="this.$emit('deleteTaskList')">
-    <!-- <button @click="clearStore()">clearStore</button> -->
+    <button @click="clearStore()">clearStore</button>
 
 </div>
 
