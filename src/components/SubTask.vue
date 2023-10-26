@@ -21,7 +21,7 @@ export default {
 <template>
 
 <div class="container-task sub-task" v-if="!subTask.isEdit">
-    <input type="checkbox" :id="subTask.id"
+    <input type="checkbox" :id="subTask.value + subTask.id"
     v-model="subTask.isDone">
     <p @click="$emit('changeEditSubTask')" 
     class="sub-task-text"

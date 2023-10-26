@@ -56,8 +56,10 @@ export default {
     img.main-icon {
         width: 10vh;
         height: 10vh;
+        min-width: 50px;
+        min-height: 50px;
         display: inline-block;
-        border-radius: 2vh;
+        border-radius: 10px;
     }
 
     h1 {
@@ -76,7 +78,7 @@ export default {
     }
 
     div.header {
-        padding: 10px 10px 10px 0px;
+        padding: 10px;
         display: flex;
         align-items: center;
         border-radius: 2vh;

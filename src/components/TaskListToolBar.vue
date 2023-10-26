@@ -40,24 +40,28 @@ export default {
     class="type-icon"
     :class="{picked: this.pickedFilters.includes('job')}" 
     src="./icons/jobTask.svg"
+    title="По работе"
     @click="this.pickFilter('job')" 
     alt="job">
     <img 
     class="type-icon"
     :class="{picked: this.pickedFilters.includes('home')}"  
     src="./icons/homeTask.svg" 
+    title="Домашние дела"
     @click="this.pickFilter('home')"
     alt="home">
     <img 
     class="type-icon" 
     :class="{picked: this.pickedFilters.includes('hobbie')}" 
     src="./icons/hobbieTask1.svg" 
+    title="Хобби"
     @click="this.pickFilter('hobbie')"
     alt="hobbie">
     <img 
     v-if="this.selectedList.id > 2"
     src="./icons/delete.svg"
     class="type-icon control"
+    title="Удалить список"
     @click="this.$emit('deleteTaskList')">
     <button @click="clearStore()">clearStore</button>
 
@@ -67,12 +71,6 @@ export default {
 </template>
 
 <style>
-
-.button-add-task {
-    display: block;
-    height: 30px;
-    margin: 2px;
-}
 
 .tool-bar-wrapper {
     display: flex;

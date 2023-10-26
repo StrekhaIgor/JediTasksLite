@@ -56,6 +56,9 @@ export default {
         delayDelete() {
             setTimeout(() => this.$emit('deleteTask'), 1000);
         },
+        convertDate(date) {
+            return date.getFullYear() + date.getMonth() + date.getDate();
+        },
     },
     watch: {
         isDone() {
@@ -73,8 +76,14 @@ export default {
 
 <template>
 
-<div class="container-task" v-if="!task.isEdit && this.isShowRepeat">
-    <input type="checkbox" :id="task.id"
+<div class="container-task"
+    :class="{
+        'failed': this.convertDate(task.executeDate) < this.convertDate(new Date()),
+        'today' : this.convertDate(task.executeDate) === this.convertDate(new Date()),
+        'normal': this.convertDate(task.executeDate) > this.convertDate(new Date())
+    }"
+    v-if="!task.isEdit && this.isShowRepeat">
+    <input type="checkbox" :id="task.value"
     v-model="task.isDone">
     <div class="task-date-wrapper"
     @click="$emit('changeEditTask')">
@@ -129,13 +138,14 @@ export default {
     >
 </div>
 <div class="container-task" v-if="task.isEdit">
-    <input type="checkbox" :id="task.id"
+    <input type="checkbox" :id="task.value"
     v-model="task.isDone">
     <div class="task-date-wrapper-edit">
-        <input type="text" :id="task.id"
+        <input type="text" :id="task.value + ' edit'"
         v-model="task.value" 
         @keyup.enter="changeEditTask">
-        <input type="date" v-model="this.date">
+        <input type="date" v-model="this.date"
+        @change="changeEditTask">
     </div>
     <div class="container-type-task-icon">
         <img src="/src/components/icons/jobTask.svg"
@@ -172,6 +182,8 @@ export default {
 
 input {
     margin: 3px;
+    cursor: pointer;
+    font-size: 1em;
 }
 
 div.task-date-wrapper-edit {
@@ -202,7 +214,6 @@ div.task-date-wrapper-edit input {
         align-items: center;
         width: calc(100% - 20px);
         min-height: 5vw;
-        background-color: beige;
         border-radius: 20px;
         margin: 10px;
         border: 1px solid black;
@@ -224,7 +235,7 @@ div.task-date-wrapper-edit input {
     div.container-type-task-icon {
         display: flex;
         align-items: center;
-        flex: 0, 2, auto;
+        flex: 0 2 auto;
     }
     div.container-task {
         display: flex;
@@ -232,7 +243,6 @@ div.task-date-wrapper-edit input {
         align-items: center;
         width: calc(100% - 20px);
         min-height: 5vw;
-        background-color: beige;
         border-radius: 10px;
         margin: 10px;
         margin-top: 2px;
@@ -243,12 +253,28 @@ div.task-date-wrapper-edit input {
     }
 }
 
+div.container-task {
+    cursor: pointer;
+}
+
+div.normal {
+    background-color: beige;
+}
+
+.failed {
+    background-color: rgb(245, 217, 207);
+}
+
+.today {
+    background-color: rgb(191, 248, 131);
+}
+
 p {
     padding: 5px 10px;
     max-width: 50vw;
     min-width: 20vw;
     overflow-wrap: break-word;
-    flex: 5, 2, auto;
+    flex: 5 2 auto;
 }
 
 p.execute-date {
@@ -263,7 +289,7 @@ p.project-name {
     color:blue;
     overflow-wrap: break-word;
     min-width: 20vw;
-    flex: 1, 2, auto;
+    flex: 1 2 auto;
 }
 
 img.type-icon {
@@ -275,6 +301,7 @@ img.type-icon {
     border: 1px solid black;
     display: block;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 img.picked {
@@ -292,6 +319,7 @@ button {
     margin: 2px;
     border-radius: 10px;
     padding: 3px;
+    cursor: pointer;
 }
 
 button.add-sub-task {

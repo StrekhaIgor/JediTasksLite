@@ -43,6 +43,7 @@
 select {
     font-size: 20px;
     width:fit-content;
+    cursor: pointer;
 }
 
 div.container-tools {
@@ -53,6 +54,10 @@ div.container-tools {
 
 label {
     font-size: 20px;
+}
+
+option {
+    cursor: pointer;
 }
 
 .option-new-list {
