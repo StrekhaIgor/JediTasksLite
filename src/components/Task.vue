@@ -1,4 +1,10 @@
 <script>
+
+const focus = {
+    mounted(el) {
+        el.focus();
+    }
+}
 export default {
     props: {
         task: Object,
@@ -15,6 +21,9 @@ export default {
         'repeatTask',
         'createSubTask',
     ],
+    directives: {
+        focus
+    },
     computed: {
         date: {
             get() {
@@ -142,7 +151,8 @@ export default {
     v-model="task.isDone">
     <div class="task-date-wrapper-edit">
         <input type="text" :id="task.value + ' edit'"
-        v-model="task.value" 
+        v-model="task.value"
+        v-focus 
         @keyup.enter="changeEditTask">
         <input type="date" v-model="this.date"
         @change="changeEditTask">

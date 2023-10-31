@@ -8,6 +8,7 @@ import TaskList from './components/TaskList.vue';
         taskLists: [
         ],
         today: new Date().toDateString(),
+        countTasks: 1,
       }
     },
     computed: {
@@ -47,11 +48,6 @@ import TaskList from './components/TaskList.vue';
           };
         }
       },
-      refreshTaskId(tasklist) {
-        for (let index = 0; index < tasklist.tasks.length; index++) {
-          tasklist.tasks[index].id = index + 1;
-        }
-      },
       deleteTask(listId, taskId) {
         let targetList = this.getTargetList(listId)
         .tasks;
@@ -83,11 +79,7 @@ import TaskList from './components/TaskList.vue';
         newTask.subTasks = [];
         newTask.isShowSubTasks = true;
         newTask.executeDate = new Date(this.today);
-        if (this.selectedList.tasks.length) {
-          newTask.id = Math.max(...this.selectedList.tasks.map((elem) => elem.id)) + 1;
-        } else {
-          newTask.id = 1;
-        };
+        newTask.id = this.countTasks++;
         this.selectedList.tasks.unshift(newTask);
       },
       moveTaskToProjects(taskListId, taskId) {
@@ -161,7 +153,7 @@ import TaskList from './components/TaskList.vue';
           projectId: projectId,
           typeTask: targetProject.typeTask,
         };
-        subTask.id = Math.max(...targetProject.subTasks.map((elem) => elem.id)) + 1;
+        subTask.id = this.countTasks++;
         targetProject.subTasks.push(subTask);
       },
       _generateMessage(projectId) {
@@ -211,10 +203,6 @@ import TaskList from './components/TaskList.vue';
           .filter((task) => task.projectId === project.id);
           if (projectTasksInList.length) continue;
           for (let subTask of project.subTasks) {
-            let newTaskId = 1;
-            if (this.taskLists[0].tasks.length !== 0) {
-              newTaskId = Math.max(...this.taskLists[0].tasks.map((elem) => elem.id)) + 1;
-            };
             let newTask = {
               projectId: project.id,
               projectName: project.value,
@@ -224,7 +212,7 @@ import TaskList from './components/TaskList.vue';
               isShow: true,
               subTasks: [],
               typeTask: project.typeTask,
-              id: newTaskId,
+              id: this.countTasks++,
               executeDate: new Date(this.today),
             };
             taskList.push(newTask);

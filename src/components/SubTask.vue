@@ -1,4 +1,10 @@
 <script>
+
+const focus = {
+    mounted(el) {
+        el.focus();
+    }
+}
 export default {
     props: {
         subTask: Object,
@@ -8,6 +14,9 @@ export default {
         'deleteSubTask',
         'createSubTask'
     ],
+    directives: {
+        focus
+    },
     methods: {
         createSubTaskByEnter() {
             this.$emit('changeEditSubTask');
@@ -30,11 +39,12 @@ export default {
     src="./icons/delete.svg"
     class="type-icon control"
     title="Удалить"
-    @click="$emit('createSubTask')">
+    @click="$emit('deleteSubTask')">
 </div>
 <div class="container-task sub-task" v-if="subTask.isEdit">
     <input type="text" :id="subTask.id"
     v-model="subTask.value"
+    v-focus
     @keypress.enter="createSubTaskByEnter()">
     <img 
     src="./icons/delete.svg"
