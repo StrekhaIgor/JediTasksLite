@@ -20,6 +20,7 @@ export default {
         'setTypeTask',
         'repeatTask',
         'createSubTask',
+        'addNewTask'
     ],
     directives: {
         focus
@@ -58,7 +59,7 @@ export default {
     methods: {
         changeEditTask() {
             this.$emit('changeEditTask');
-            if (this.taskListId === 2) {
+            if (this.taskListId === 2 && this.task.value) {
                 this.$emit('generateStartSubTask', this.task.id, this.message);
             }
         },
@@ -66,8 +67,18 @@ export default {
             setTimeout(() => this.$emit('deleteTask'), 1000);
         },
         convertDate(date) {
-            return date.getFullYear() + date.getMonth() + date.getDate();
+            let year = String(date.getFullYear());
+            let month = String(date.getMonth());
+            month = month.length === 1 ? '0' + month : month;
+            let day = String(date.getDate());
+            day = day.length === 1 ? '0' + day : day;
+            return year + month + day;
         },
+        backSpace() {
+            if (!this.task.value) {
+                this.$emit('deleteTask');
+            };
+        }
     },
     watch: {
         isDone() {
@@ -153,7 +164,9 @@ export default {
         <input type="text" :id="task.value + ' edit'"
         v-model="task.value"
         v-focus 
-        @keyup.enter="changeEditTask">
+        @keyup.enter="changeEditTask(), this.$emit('addNewTask')"
+        @keyup.esc="changeEditTask()"
+        @keyup.delete="backSpace()">
         <input type="date" v-model="this.date"
         @change="changeEditTask">
     </div>

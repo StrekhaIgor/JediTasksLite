@@ -69,6 +69,10 @@ import TaskList from './components/TaskList.vue';
       },
       changeEditTask(listId, taskId) {
         let targetTask = this.getTargetTask(listId, taskId);
+        if (!targetTask.value) {
+          this.deleteTask(listId, taskId);
+          return;
+        }
         targetTask.isEdit = !targetTask.isEdit;
         this.sortTasks();
       },
@@ -128,8 +132,15 @@ import TaskList from './components/TaskList.vue';
         .filter((project) => project.id === projectId)[0];
         let targetSubTask = targetProject.subTasks
         .filter((subTask) => subTask.id === subTaskId)[0];
-        targetSubTask.isEdit = !targetSubTask.isEdit;
-        this.deleteStartSubTask(projectId);
+        if (!targetSubTask.value) {
+          this.deleteSubTask(projectId, subTaskId);
+        };
+        if (targetSubTask.id === 0) {
+          this.deleteStartSubTask(projectId);
+          this.createSubTask(projectId);
+        } else { 
+          targetSubTask.isEdit = !targetSubTask.isEdit;
+        }
       },
       changeVisibleSubTasks(projectId) {
         let projectList = this.taskLists[1].tasks;
@@ -154,6 +165,7 @@ import TaskList from './components/TaskList.vue';
           typeTask: targetProject.typeTask,
         };
         subTask.id = this.countTasks++;
+        this.deleteStartSubTask(projectId);
         targetProject.subTasks.push(subTask);
       },
       _generateMessage(projectId) {

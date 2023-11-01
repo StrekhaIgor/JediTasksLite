@@ -95,7 +95,8 @@ export default {
         @generate-start-sub-task="generateStartSubTask"
         @set-type-task="setTypeTask"
         @repeat-task="$emit('repeatTask', task.id)"
-        @create-sub-task="$emit('createSubTask', task.id)"/>
+        @create-sub-task="$emit('createSubTask', task.id)"
+        @add-new-task="$emit('addNewTask')"/>
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
             v-if="task.isShow"

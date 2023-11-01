@@ -21,6 +21,11 @@ export default {
         createSubTaskByEnter() {
             this.$emit('changeEditSubTask');
             this.$emit('createSubTask');
+        },
+        backSpace() {
+            if (!this.subTask.value) {
+                this.$emit('deleteSubTask');
+            };
         }
     }
 }
@@ -45,7 +50,9 @@ export default {
     <input type="text" :id="subTask.id"
     v-model="subTask.value"
     v-focus
-    @keypress.enter="createSubTaskByEnter()">
+    @keypress.enter="createSubTaskByEnter()"
+    @keyup.esc="this.$emit('changeEditSubTask')"
+    @keyup.delete="backSpace()">
     <img 
     src="./icons/delete.svg"
     class="type-icon control"
