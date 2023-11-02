@@ -326,9 +326,6 @@ import TaskList from './components/TaskList.vue';
   @create-sub-task="createSubTask"
   @filterTaskList="filterTaskList"
   @delete-task-list="deleteTaskList"/>
-  <button
-  @click="console.log(this.taskLists[0].tasks)"
-  >test</button>
 </template>
 
 <style scoped>
