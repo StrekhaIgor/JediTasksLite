@@ -51,9 +51,18 @@ export default {
             return JSON.stringify(this.task.subTasks);
         },
         isShowRepeat() {
-            if (!this.task.isRepeat) return true;
-            if (this.task.executeDate.getDate() === new Date().getDate()) return true;
-            return false;
+            if (!this.task.isRepeat) {
+                return true
+            } else {
+            return this.convertDate(this.task.executeDate) 
+            === this.convertDate(new Date())
+            };
+        },
+        markedValue() {
+            if (this.task.freezed) {
+                return this.task.value + ' [Остановлен]';
+            };
+            return this.task.value;
         }
     },
     methods: {
@@ -64,7 +73,7 @@ export default {
             }
         },
         delayDelete() {
-            setTimeout(() => this.$emit('deleteTask'), 1000);
+            setTimeout(() => this.$emit('deleteTask'), 500);
         },
         convertDate(date) {
             let year = String(date.getFullYear());
@@ -108,7 +117,8 @@ export default {
     <div class="task-date-wrapper"
     @click="$emit('changeEditTask')">
         <p 
-        :class="{ done: task.isDone}">{{ task.value }}</p>
+        :class="{ done: task.isDone,
+                freezed: task.freezed}">{{ this.markedValue }}</p>
         <p v-if="this.task.executeDate" class="execute-date">
             {{ this.executeDate }}
         </p>
@@ -143,7 +153,7 @@ export default {
     <img
     src="./icons/start-project.svg"
     title="Начать проект"
-    @click="$emit('moveTaskToProjects')" 
+    @click="console.log(this.isShowRepeat)" 
     v-if="taskListId !== 2"
     class="type-icon control"
     >
@@ -306,6 +316,11 @@ p.execute-date {
 
 p.done {
     text-decoration: line-through;
+}
+
+p.freezed {
+    background-color: rgb(89, 210, 237);
+    border-radius: 10px;
 }
 
 p.project-name {

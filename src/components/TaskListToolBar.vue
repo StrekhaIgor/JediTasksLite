@@ -57,6 +57,7 @@ export default {
     title="Хобби"
     @click="this.pickFilter('hobbie')"
     alt="hobbie">
+    <div class="greedy-box"></div>
     <img 
     v-if="this.selectedList.id > 2"
     src="./icons/delete.svg"
@@ -76,6 +77,11 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin: 3px 10px;
+}
+
+div.greedy-box {
+    flex-grow: 1;
 }
 
 </style>

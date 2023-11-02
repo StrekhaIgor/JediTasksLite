@@ -50,8 +50,10 @@ import TaskList from './components/TaskList.vue';
       },
       deleteTask(listId, taskId) {
         let targetList = this.getTargetList(listId)
-        .tasks;
-        let targetTask = targetList.splice(targetList.findIndex((el) => el.id === taskId), 1)[0];
+        let targetTask = targetList
+        .tasks
+        .splice(targetList.tasks
+        .findIndex((el) => el.id === taskId), 1)[0];
         let projectId = targetTask.projectId;
         if (projectId && !targetTask.isRepeat) {
           this.deleteSubTask(targetTask.projectId, targetTask.selfId);
@@ -59,10 +61,13 @@ import TaskList from './components/TaskList.vue';
           if (!targetProject.subTasks.length) {
             this.generateStartSubTask(projectId, this._generateMessage(projectId));
           };
+          targetProject.freezed = false;
+          this.emitSubTask();
         };
+        
         if (targetTask.isRepeat) {
           targetTask.isDone = false;
-          targetTask.executeDate.setDate(targetTask.executeDate.getDate() + 1);
+          targetTask.executeDate.setDate(targetTask.executeDate.getDate() + 2);
           this.taskLists[0].tasks.push(targetTask);
         };
         this.sortTasks();
@@ -99,11 +104,15 @@ import TaskList from './components/TaskList.vue';
         }
         let movedTask = taskList.splice(index, 1)[0];
         if (movedTask.projectId) {
+          this.deleteSubTask(movedTask.projectId, movedTask.selfId);
+          let freezedProject = this.getTargetTask(2, movedTask.projectId);
+          freezedProject.freezed = true;
           this.emitSubTask();
-          return;
         };
-        movedTask.id = this.taskLists[1].tasks.length + 1;
+        movedTask.isShowSubTasks = true;
         this.taskLists[1].tasks.push(movedTask);
+        this.generateStartSubTask(taskId);
+        this.emitSubTask();
       },
       createNewList() {
         let newList = {};
@@ -183,7 +192,7 @@ import TaskList from './components/TaskList.vue';
           this.taskLists[1]
           .tasks
           .filter(project => project.id === projectId)[0];
-        targetSubTasks.subTasks = targetSubTasks.subTasks.filter(subTask => subTask.id !== 0);
+        if (targetSubTasks.subTasks.length) return;
         startTask.typeTask = targetSubTasks.typeTask;
         targetSubTasks.subTasks.unshift(startTask);
       },
@@ -207,13 +216,13 @@ import TaskList from './components/TaskList.vue';
       },
       emitSubTask() {
         let projectList = this.taskLists[1].tasks;
-        //this.taskLists[0].tasks = this.taskLists[0].tasks
-        //.filter((task) => !task.projectId);
+        this.taskLists[0].tasks = this.taskLists[0].tasks
+        .filter((task) => !task.projectId || task.isRepeat);
         let taskList = this.taskLists[0].tasks;
         for (let project of projectList) {
           let projectTasksInList = taskList
           .filter((task) => task.projectId === project.id);
-          if (projectTasksInList.length) continue;
+          if (projectTasksInList.length || project.freezed) continue;
           for (let subTask of project.subTasks) {
             let newTask = {
               projectId: project.id,
