@@ -158,7 +158,7 @@ export default {
     <img
     src="./icons/start-project.svg"
     title="Начать проект"
-    @click="console.log(this.isShowRepeat)" 
+    @click="this.$emit('moveTaskToProjects')" 
     v-if="taskListId !== 2"
     class="type-icon control"
     >
