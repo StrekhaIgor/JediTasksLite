@@ -33,7 +33,8 @@ export default {
         'repeatTask',
         'createSubTask',
         'filterTaskList',
-        'deleteTaskList'
+        'deleteTaskList',
+        'goToProjects'
     ],
     methods: {
         createNewList() {
@@ -96,7 +97,8 @@ export default {
         @set-type-task="setTypeTask"
         @repeat-task="$emit('repeatTask', task.id)"
         @create-sub-task="$emit('createSubTask', task.id)"
-        @add-new-task="$emit('addNewTask')"/>
+        @add-new-task="$emit('addNewTask')"
+        @go-to-projects="this.$emit('goToProjects')"/>
         <template v-if="selectedList.id === 2 && task.isShowSubTasks">
             <sub-tasks
             v-if="task.isShow"

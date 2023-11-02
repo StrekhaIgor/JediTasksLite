@@ -20,7 +20,8 @@ export default {
         'setTypeTask',
         'repeatTask',
         'createSubTask',
-        'addNewTask'
+        'addNewTask',
+        'goToProjects'
     ],
     directives: {
         focus
@@ -67,6 +68,10 @@ export default {
     },
     methods: {
         changeEditTask() {
+            if (this.task.selfId === 0) {
+                this.$emit('goToProjects');
+                return;
+            };
             this.$emit('changeEditTask');
             if (this.taskListId === 2 && this.task.value) {
                 this.$emit('generateStartSubTask', this.task.id, this.message);
@@ -115,7 +120,7 @@ export default {
     <input type="checkbox" :id="task.value"
     v-model="task.isDone">
     <div class="task-date-wrapper"
-    @click="$emit('changeEditTask')">
+    @click="changeEditTask()">
         <p 
         :class="{ done: task.isDone,
                 freezed: task.freezed}">{{ this.markedValue }}</p>

@@ -325,7 +325,8 @@ import TaskList from './components/TaskList.vue';
   @repeat-task="repeatTask"
   @create-sub-task="createSubTask"
   @filterTaskList="filterTaskList"
-  @delete-task-list="deleteTaskList"/>
+  @delete-task-list="deleteTaskList"
+  @go-to-projects="changeSelected('Проекты')"/>
 </template>
 
 <style scoped>
