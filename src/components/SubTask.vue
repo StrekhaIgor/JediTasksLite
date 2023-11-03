@@ -6,6 +6,11 @@ const focus = {
     }
 }
 export default {
+    data() {
+        return {
+            countBackSpace: 0,
+        }
+    },
     props: {
         subTask: Object,
     },
@@ -24,7 +29,12 @@ export default {
         },
         backSpace() {
             if (!this.subTask.value) {
-                this.$emit('deleteSubTask');
+                if (this.countBackSpace) {
+                    this.$emit('deleteSubTask');
+                    this.countBackSpace = 0;
+                } else {
+                    this.countBackSpace++;
+                }
             };
         }
     }

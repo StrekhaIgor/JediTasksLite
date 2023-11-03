@@ -7,7 +7,7 @@ import TaskList from './components/TaskList.vue';
       return {
         taskLists: [
         ],
-        today: new Date().toDateString(),
+        today: new Date().toISOString().split('T')[0],
         countTasks: 1,
       }
     },
@@ -67,7 +67,9 @@ import TaskList from './components/TaskList.vue';
         
         if (targetTask.isRepeat) {
           targetTask.isDone = false;
-          targetTask.executeDate.setDate(targetTask.executeDate.getDate() + 2);
+          let taskDate = new Date(targetTask.executeDate);
+          taskDate.setDate(taskDate.getDate() + 1);
+          targetTask.executeDate = taskDate.toISOString().split('T')[0];
           this.taskLists[0].tasks.push(targetTask);
         };
         this.sortTasks();
@@ -87,7 +89,7 @@ import TaskList from './components/TaskList.vue';
         newTask.isShow = true;
         newTask.subTasks = [];
         newTask.isShowSubTasks = true;
-        newTask.executeDate = new Date(this.today);
+        newTask.executeDate = this.today;
         newTask.id = this.countTasks++;
         this.selectedList.tasks.unshift(newTask);
       },
@@ -201,7 +203,8 @@ import TaskList from './components/TaskList.vue';
         targetProject.subTasks = targetProject.subTasks.filter((el) => el.id !== 0);
       },
       sortTasks() {
-        this.taskLists[0].tasks.sort((a, b) => a.executeDate - b.executeDate);
+        this.taskLists[0].tasks
+        .sort((a, b) => new Date(a.executeDate) - new Date(b.executeDate));
       },
       setTypeTask(taskListId, taskId, value) {
         let targetTask = this.getTargetTask(taskListId, taskId);
@@ -234,7 +237,7 @@ import TaskList from './components/TaskList.vue';
               subTasks: [],
               typeTask: project.typeTask,
               id: this.countTasks++,
-              executeDate: new Date(this.today),
+              executeDate: this.today,
             };
             taskList.push(newTask);
             break;
@@ -282,9 +285,8 @@ import TaskList from './components/TaskList.vue';
         this.taskLists = JSON.parse(localStorage.getItem('appData'));
         for (let taskList of this.taskLists) {
           for (let task of taskList.tasks) {
-            task.executeDate = new Date(task.executeDate);
-            if (task.isRepeat && task.executeDate < new Date(this.today)) {
-              task.executeDate = new Date(this.today);
+            if (task.isRepeat && task.executeDate < this.today) {
+              task.executeDate = this.today;
             }
           }
         }
@@ -294,7 +296,7 @@ import TaskList from './components/TaskList.vue';
     },
     mounted() {
       this.sortTasks();
-      this.today = new Date().toDateString();
+      this.today = new Date().toISOString().split('T')[0];
     },
     watch: {
       jsonTaskLists() {

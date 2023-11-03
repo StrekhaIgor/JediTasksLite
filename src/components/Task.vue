@@ -6,6 +6,11 @@ const focus = {
     }
 }
 export default {
+    data() {
+        return {
+            countBackSpace: 0,
+        }
+    },
     props: {
         task: Object,
         taskListId: Number,
@@ -32,32 +37,23 @@ export default {
                 if (this.task.executeDate) {
                     return this.task.executeDate;
                 } else {
-                    return new Date;
+                    return new Date().toISOString().split('T')[0];
                 }
             },
             set(executeDate) {
-                this.$emit('setExecuteDate', this.taskListId, this.task.id, new Date(executeDate));
+                this.$emit('setExecuteDate', this.taskListId, this.task.id, executeDate);
             }
         },
         isDone() {
             return this.task.isDone;
         },
         executeDate() {
-            let taskDate = new Date(this.task.executeDate).toLocaleDateString();
-            if (taskDate === new Date().toLocaleDateString()) {
+            if (this.task.executeDate === new Date().toISOString().split('T')[0]) {
                 return 'Сегодня';
-            } else return taskDate;
+            } else return this.convertDate(this.task.executeDate);
         },
         listSubTasks() {
             return JSON.stringify(this.task.subTasks);
-        },
-        isShowRepeat() {
-            if (!this.task.isRepeat) {
-                return true
-            } else {
-            return this.convertDate(this.task.executeDate) 
-            === this.convertDate(new Date())
-            };
         },
         markedValue() {
             if (this.task.freezed) {
@@ -81,16 +77,16 @@ export default {
             setTimeout(() => this.$emit('deleteTask'), 500);
         },
         convertDate(date) {
-            let year = String(date.getFullYear());
-            let month = String(date.getMonth());
-            month = month.length === 1 ? '0' + month : month;
-            let day = String(date.getDate());
-            day = day.length === 1 ? '0' + day : day;
-            return year + month + day;
+            return date.split('-').reverse().join('.');
         },
         backSpace() {
             if (!this.task.value) {
-                this.$emit('deleteTask');
+                if (this.countBackSpace) {
+                    this.$emit('deleteTask');
+                    this.countBackSpace = 0;
+                } else {
+                    this.countBackSpace++;
+                }
             };
         }
     },
@@ -112,11 +108,11 @@ export default {
 
 <div class="container-task"
     :class="{
-        'failed': this.convertDate(task.executeDate) < this.convertDate(new Date()),
-        'today' : this.convertDate(task.executeDate) === this.convertDate(new Date()),
-        'normal': this.convertDate(task.executeDate) > this.convertDate(new Date())
+        'failed': this.task.executeDate < new Date().toISOString().split('T')[0],
+        'today' : this.task.executeDate === new Date().toISOString().split('T')[0],
+        'normal': this.task.executeDate > new Date().toISOString().split('T')[0]
     }"
-    v-if="!task.isEdit && this.isShowRepeat">
+    v-if="!task.isEdit">
     <input type="checkbox" :id="task.value"
     v-model="task.isDone">
     <div class="task-date-wrapper"
@@ -224,18 +220,24 @@ input {
     font-size: 1em;
 }
 
-div.task-date-wrapper-edit {
+
+
+@media (min-width: 600px) {
+    * {
+        font-size: 18px;
+    }
+
+    div.task-date-wrapper-edit {
         display: flex;
         flex-direction: column;
         max-width: 20vw;
         flex-grow: 50;
-}
+    }
 
-div.task-date-wrapper-edit input {
-    max-width: 40vw;
-}
+    div.task-date-wrapper-edit input {
+        max-width: 40vw;
+    }
 
-@media (min-width: 600px) {
     div.task-date-wrapper {
         display: flex;
         flex-direction: column;
@@ -263,6 +265,7 @@ div.task-date-wrapper-edit input {
 }
 
 @media (max-width: 600px) {
+
     div.task-date-wrapper {
         display: flex;
         flex-direction: column;
@@ -270,6 +273,13 @@ div.task-date-wrapper-edit input {
         align-items:baseline;
         min-width: 20vw;
     }
+
+    div.task-date-wrapper-edit {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 50;
+    }
+
     div.container-type-task-icon {
         display: flex;
         align-items: center;
