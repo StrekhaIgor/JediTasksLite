@@ -21,10 +21,15 @@ export default {
                 this.pickedFilters.push(value);
             };
             this.$emit('filterTaskList', this.pickedFilters);
+            localStorage.setItem('pickedFilters', JSON.stringify(this.pickedFilters));
         },
         clearStore() {
             localStorage.clear();
         }
+    },
+    mounted() {
+        let pickedFilters = localStorage.getItem('pickedFilters');
+        this.pickedFilters = pickedFilters ? JSON.parse(pickedFilters) : ['job', 'home', 'hobbie'];
     }
 }
 </script>

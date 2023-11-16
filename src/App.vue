@@ -1,4 +1,5 @@
 <script>
+import { nextTick } from 'vue';
 import HeaderApp from './components/HeaderApp.vue';
 import TaskList from './components/TaskList.vue';
 
@@ -81,7 +82,7 @@ import TaskList from './components/TaskList.vue';
           return;
         }
         targetTask.isEdit = !targetTask.isEdit;
-        this.sortTasks();
+        nextTick(() => this.sortTasks());
       },
       addNewTask() {
         let newTask = {};
@@ -176,7 +177,6 @@ import TaskList from './components/TaskList.vue';
           typeTask: targetProject.typeTask,
         };
         subTask.id = this.countTasks++;
-        this.deleteStartSubTask(projectId);
         targetProject.subTasks.push(subTask);
       },
       _generateMessage(projectId) {
@@ -204,7 +204,8 @@ import TaskList from './components/TaskList.vue';
       },
       sortTasks() {
         this.taskLists[0].tasks
-        .sort((a, b) => new Date(a.executeDate) - new Date(b.executeDate));
+        .sort((a, b) => new Date(a.executeDate) - new Date(b.executeDate))
+        .sort((a, b) => b.importantTask - a.importantTask);
       },
       setTypeTask(taskListId, taskId, value) {
         let targetTask = this.getTargetTask(taskListId, taskId);
@@ -216,6 +217,7 @@ import TaskList from './components/TaskList.vue';
       },
       updateStore() {
         localStorage.setItem('appData', JSON.stringify(this.taskLists));
+        localStorage.setItem('countTasks', this.countTasks);
       },
       emitSubTask() {
         let projectList = this.taskLists[1].tasks;
@@ -236,14 +238,14 @@ import TaskList from './components/TaskList.vue';
               isShow: true,
               subTasks: [],
               typeTask: project.typeTask,
-              id: this.countTasks++,
               executeDate: this.today,
             };
+            newTask.id = newTask.selfId === 0 ? 'start' + newTask.projectId : newTask.selfId;
             taskList.push(newTask);
             break;
           }
         };
-        this.sortTasks();
+        nextTick(() => this.sortTasks());
       },
       filterTaskList(arrayOfFilters) {
         for (let taskList of this.taskLists) { 
@@ -293,6 +295,8 @@ import TaskList from './components/TaskList.vue';
       } else {
         this.taskLists = start;
       };
+      let countTasks = localStorage.getItem('countTasks');
+      this.countTasks = countTasks ? countTasks : 200;
     },
     mounted() {
       this.sortTasks();

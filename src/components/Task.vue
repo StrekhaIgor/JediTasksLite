@@ -60,6 +60,10 @@ export default {
                 return this.task.value + ' [Остановлен]';
             };
             return this.task.value;
+        },
+        importantTask() {
+            this.task.importantTask = this.task.value.includes('!!!');
+            return this.task.importantTask;
         }
     },
     methods: {
@@ -117,10 +121,11 @@ export default {
     v-model="task.isDone">
     <div class="task-date-wrapper"
     @click="changeEditTask()">
-        <p 
+        <p class="task-value"
         :class="{ done: task.isDone,
-                freezed: task.freezed}">{{ this.markedValue }}</p>
-        <p v-if="this.task.executeDate" class="execute-date">
+                freezed: task.freezed,
+                imp: this.importantTask}">{{ this.markedValue }}</p>
+        <p v-if="this.task.executeDate && !this.importantTask" class="execute-date">
             {{ this.executeDate }}
         </p>
     </div>
@@ -169,7 +174,7 @@ export default {
     >
 </div>
 <div class="container-task" v-if="task.isEdit">
-    <input type="checkbox" :id="task.value"
+    <input type="checkbox" :id="task.id"
     v-model="task.isDone">
     <div class="task-date-wrapper-edit">
         <input type="text" :id="task.value + ' edit'"
@@ -241,7 +246,7 @@ input {
     div.task-date-wrapper {
         display: flex;
         flex-direction: column;
-        flex-grow: 50;
+        flex: 2 1 auto;
     }
     div.container-type-task-icon {
         flex-grow: 0;
@@ -253,7 +258,6 @@ input {
         flex-direction: row;
         align-items: center;
         width: calc(100% - 20px);
-        min-height: 5vw;
         border-radius: 20px;
         margin: 10px;
         border: 1px solid black;
@@ -269,21 +273,23 @@ input {
     div.task-date-wrapper {
         display: flex;
         flex-direction: column;
-        flex: 50 2 auto;
+        flex: 0 1 auto;
+        min-width: 0px;
         align-items:baseline;
-        min-width: 20vw;
+        overflow:visible;
     }
 
     div.task-date-wrapper-edit {
         display: flex;
         flex-direction: column;
         flex-grow: 50;
+        min-width: 0px;
     }
 
     div.container-type-task-icon {
         display: flex;
         align-items: center;
-        flex: 0 2 auto;
+        flex: 0 0 auto;
     }
     div.container-task {
         display: flex;
@@ -297,7 +303,18 @@ input {
         margin-bottom: 2px;
         border: 1px solid black;
         flex-wrap: nowrap;
-        overflow: auto;
+        overflow :visible;
+    }
+    p {
+        flex: 1 1 auto;
+        overflow-wrap: break-word;
+    }
+    p.imp {
+        width: 100%;
+    }
+
+    p.task-value {
+        width: 100%;
     }
 }
 
@@ -319,14 +336,13 @@ div.normal {
 
 p {
     padding: 5px 10px;
-    max-width: 50vw;
-    min-width: 20vw;
     overflow-wrap: break-word;
-    flex: 5 2 auto;
+    flex: 1 1 auto;
 }
 
 p.execute-date {
     color: purple;
+    flex: 0 1 auto;
 }
 
 p.done {
@@ -338,11 +354,19 @@ p.freezed {
     border-radius: 10px;
 }
 
+p.imp {
+    background-color: red;
+    border-radius: 10px;
+    min-width: 0px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
 p.project-name {
     color:blue;
+    overflow: hidden;
     overflow-wrap: break-word;
-    min-width: 20vw;
-    flex: 1 2 auto;
+    flex: 1 1 auto;
 }
 
 img.type-icon {
@@ -363,20 +387,6 @@ img.picked {
 
 img.control {
     background-color: coral;
-}
-
-button {
-    height: 30px;
-    min-width: max-content;
-    flex-wrap: nowrap;
-    margin: 2px;
-    border-radius: 10px;
-    padding: 3px;
-    cursor: pointer;
-}
-
-button.add-sub-task {
-    display: block;
 }
 
 

@@ -18,10 +18,6 @@ export default {
         }
     },
     methods: {
-        getCoord(elem) {
-            console.log(elem.getBoundingClientRect());
-            console.log(elem);
-        },
         changeSelected(listName) {
             this.$emit('changeSelected', listName);
         }
@@ -54,10 +50,12 @@ export default {
 
 <style>
     img.main-icon {
-        width: 10vh;
-        height: 10vh;
+        width: 10vw;
+        height: 10vw;
         min-width: 50px;
+        max-width: 70px;
         min-height: 50px;
+        max-height: 70px;
         display: inline-block;
         border-radius: 10px;
     }

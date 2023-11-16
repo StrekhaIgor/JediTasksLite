@@ -41,7 +41,6 @@ export default {
             this.$emit('changeEditListName', this.selectedList.id, this.listName);
             this.$emit('changeSelected', this.listName);
             this.listName = 'Ввeдите имя списка';
-
         },
         clearInputName() {
             this.listName = '';
