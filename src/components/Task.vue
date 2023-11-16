@@ -283,7 +283,7 @@ textarea {
     div.task-date-wrapper {
         display: flex;
         flex-direction: column;
-        flex: 0 1 auto;
+        flex: 1 1 auto;
         min-width: 0px;
         align-items:baseline;
         overflow:visible;
