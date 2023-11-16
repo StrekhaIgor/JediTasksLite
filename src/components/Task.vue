@@ -235,8 +235,8 @@ input {
     div.task-date-wrapper-edit {
         display: flex;
         flex-direction: column;
-        max-width: 20vw;
-        flex-grow: 50;
+        min-width: 0px;
+        flex: 1 1 auto;
     }
 
     div.task-date-wrapper-edit input {
@@ -258,7 +258,7 @@ input {
         flex-direction: row;
         align-items: center;
         width: calc(100% - 20px);
-        border-radius: 20px;
+        border-radius: 15px;
         margin: 10px;
         border: 1px solid black;
         flex-wrap:nowrap;
@@ -360,6 +360,7 @@ p.imp {
     min-width: 0px;
     overflow: hidden;
     overflow-wrap: break-word;
+    margin: 5px;
 }
 
 p.project-name {
