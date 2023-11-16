@@ -177,12 +177,12 @@ export default {
     <input type="checkbox" :id="task.id"
     v-model="task.isDone">
     <div class="task-date-wrapper-edit">
-        <input type="text" :id="task.value + ' edit'"
+        <textarea type="text" :id="task.value + ' edit'"
         v-model="task.value"
         v-focus 
         @keyup.enter="changeEditTask(), this.$emit('addNewTask')"
         @keyup.esc="changeEditTask()"
-        @keyup.delete="backSpace()">
+        @keyup.delete="backSpace()"></textarea>
         <input type="date" v-model="this.date"
         @change="changeEditTask">
     </div>
@@ -225,6 +225,12 @@ input {
     font-size: 1em;
 }
 
+textarea {
+    margin: 3px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
 
 
 @media (min-width: 600px) {
@@ -240,6 +246,10 @@ input {
     }
 
     div.task-date-wrapper-edit input {
+        max-width: 40vw;
+    }
+
+    div.task-date-wrapper-edit textarea {
         max-width: 40vw;
     }
 
