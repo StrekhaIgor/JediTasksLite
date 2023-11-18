@@ -57,12 +57,12 @@ export default {
     @click="$emit('deleteSubTask')">
 </div>
 <div class="container-task sub-task" v-if="subTask.isEdit">
-    <input type="text" :id="subTask.id"
+    <textarea :id="subTask.id"
     v-model="subTask.value"
     v-focus
     @keypress.enter="createSubTaskByEnter()"
     @keyup.esc="this.$emit('changeEditSubTask')"
-    @keyup.delete="backSpace()">
+    @keyup.delete="backSpace()"></textarea>
     <img 
     src="./icons/delete.svg"
     class="type-icon control"

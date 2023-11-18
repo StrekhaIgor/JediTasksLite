@@ -79,7 +79,7 @@ export default {
     @add-new-task="$emit('addNewTask')"
     @filterTaskList="filterTaskList"
     @delete-task-list="this.$emit('deleteTaskList', this.selectedList.id)"/>
-    <input type="text" v-if="selectedList.isEdit" v-model="this.listName"
+    <input type="text" :id="this.selectedList.id" v-if="selectedList.isEdit" v-model="this.listName"
     @blur="createNewList"
     @keyup.enter="createNewList"
     @click="clearInputName">

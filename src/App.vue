@@ -37,6 +37,11 @@ import TaskList from './components/TaskList.vue';
           list.isSelect = (list.listName === listName);
         };
         this.emitSubTask();
+        if (listName !== 'Проекты') {
+          for (let project of this.taskLists[1].tasks) {
+            project.isShowSubTasks = false;
+          }
+        }
       },
       getTargetList(listId) {
         return this.taskLists
@@ -115,7 +120,7 @@ import TaskList from './components/TaskList.vue';
         movedTask.isShowSubTasks = true;
         this.taskLists[1].tasks.push(movedTask);
         this.generateStartSubTask(taskId);
-        this.emitSubTask();
+        this.changeSelected('Проекты');
       },
       createNewList() {
         let newList = {};

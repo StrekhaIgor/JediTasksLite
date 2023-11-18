@@ -63,6 +63,9 @@ export default {
         },
         importantTask() {
             this.task.importantTask = this.task.value.includes('!!!');
+            if (this.task.projectName && this.task.projectName.includes('!!!')) {
+                this.task.importantTask = true;
+            } 
             return this.task.importantTask;
         }
     },
@@ -229,8 +232,8 @@ textarea {
     margin: 3px;
     cursor: pointer;
     font-size: 1em;
+    padding: 3px;
 }
-
 
 
 @media (min-width: 600px) {
@@ -257,6 +260,7 @@ textarea {
         display: flex;
         flex-direction: column;
         flex: 2 1 auto;
+        margin-right: 10px;
     }
     div.container-type-task-icon {
         flex-grow: 0;
@@ -287,6 +291,7 @@ textarea {
         min-width: 0px;
         align-items:baseline;
         overflow:visible;
+        margin-right: 10px;
     }
 
     div.task-date-wrapper-edit {

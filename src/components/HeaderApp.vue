@@ -8,15 +8,6 @@ export default {
             coord: {},
         }
     },
-    computed: {
-        styleList() {
-            return {
-                position: 'absolute',
-                top: this.coord.bottom + 50  + 'px',
-                color: 'red',
-            }
-        }
-    },
     methods: {
         changeSelected(listName) {
             this.$emit('changeSelected', listName);
